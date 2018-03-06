@@ -1,4 +1,4 @@
-import util from '@/assets/js/util'
+import util from 'assets/util'
 import Axios from 'axios'
 const _ajax = (obj) => {
     obj = obj || {}

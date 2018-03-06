@@ -4,7 +4,7 @@
             <h3>我的关注</h3>
             <span class="btn btn_edit" @click="isEditing = !isEditing">{{editStatusTxt}}</span>
             <ul class="list_sub">
-                <li v-for="item in subscripList">
+                <li v-for="item in subscripList" :key="item.id">
                     <span class="unit_photo"></span>
                     <span>{{item.subUserName}}</span>
                     <span>{{item.subUserTeam}}</span>
@@ -19,7 +19,7 @@
             <input type="text" class="search_content" v-model="searchContent" placeholder="请输入用户姓名">
             <span class="search_btn" @click="getUsers">Search</span>
             <ul class="maxh500">
-                <li v-for="item in userList">
+                <li v-for="item in userList" :key="item.id">
                     <input type="radio" name="user" :value="item" v-model="subUser">
                     <label for="user">{{item.nickName}}--{{item.teamId.teamName}}</label>
                 </li>
@@ -128,6 +128,7 @@ export default {
         }
     }
 }
+
 </script>
 <style lang="scss" scoped>
 .page_mysub {
@@ -149,8 +150,7 @@ export default {
             padding: 20px;
             li {
                 position: relative;
-                width: 120px;
-                // height: 110px;
+                width: 120px; // height: 110px;
                 line-height: 30px;
                 background: #fff;
                 border-radius: 15px;
@@ -200,9 +200,9 @@ export default {
         .maxh500 {
             max-height: 500px;
         }
-
     }
 }
+
 .el-dialog {
     border-radius: 20px !important;
     .search_content {
@@ -227,9 +227,7 @@ export default {
 }
 
 .dialog-footer {
-    span {
-
-    }
+    span {}
 }
 
 </style>

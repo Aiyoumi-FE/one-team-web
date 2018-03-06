@@ -1,6 +1,6 @@
-# one-team-pc
+# one-team-web
 
-> PC end of one team project
+> Web end of one team project
 
 ## Build Setup
 

@@ -38,15 +38,9 @@
     </div>
 </template>
 <script>
-import pageHeader from '../../header'
 import {
     signout
 } from '@/store/home'
-import {
-    cookie
-} from '@/assets/js/cookie'
-import base64 from '@/assets/js/base64'
-import util from '@/assets/js/util'
 export default {
     name: 'members-settings',
     data() {
@@ -54,19 +48,7 @@ export default {
             nickName: ''
         }
     },
-    components: {
-        pageHeader
-    },
-    mounted() {
-        this.initData()
-    },
     methods: {
-        initData() {
-            this.nickName = base64.decode(cookie.get('name'))
-            if (!this.nickName) {
-                util.login()
-            }
-        },
         submitSignout() {
             signout((res) => {
                 if (res.success) {
@@ -110,7 +92,7 @@ export default {
 
 </script>
 <style lang='scss' scoped>
-@import '../../../var.scss';
+// @import '../../../var.scss';
 .link-delete {
     display: block;
     position: absolute;

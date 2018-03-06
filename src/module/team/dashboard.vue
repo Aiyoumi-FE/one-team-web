@@ -20,7 +20,7 @@
                 <!-- 直属下级部门 -->
                 <section v-show="showType == 'childTeam'">
                     <ul class="ot-cells">
-                        <li v-for="item in childTeamList" class="ot-cell" @click="goToTeam(item)">
+                        <li v-for="item in childTeamList" :key="item.id" class="ot-cell" @click="goToTeam(item)">
                             <div class="cell-hd">
                                 <span class="circle_name">{{item.teamName | nameFilter}}</span>
                             </div>
@@ -65,7 +65,7 @@
                     </div>
                     <div v-else>
                         <ul class="list_sub">
-                            <li v-for="item in focusList" @click="goPage('weeklyList', item)">
+                            <li v-for="item in focusList" :key="item.id" @click="goPage('weeklyList', item)">
                                 <span class="unit_photo"></span>
                                 <span>{{item.subUserName}}</span>
                                 <span>{{item.subUserTeam}}</span>
@@ -313,14 +313,6 @@ export default {
         }
     }
 }
-
-
-
-
-
-
-
-/* 所有部门 */
 
 .section_allteam {
     display: flex;

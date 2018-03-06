@@ -1,6 +1,5 @@
 <template>
     <div class="mid">
-        <img :src="nullPic" alt="" class="team-pic_no">
         <h3>您还未加入任何团队</h3>
         <p class="btn btn-choose">
             <span class="btn-create" :class="{'on' : opera == 'create'}" @click="operation('create')">创建团队</span>
@@ -8,7 +7,7 @@
         </p>
         <div v-show="opera" class="team-opera">
             <input type="text" class="input" ref="field" :placeholder="placeholder" v-model.trim="field">
-            <img :src="nextPic" alt="" class="team-pic_next" @click="submit">
+            <p @click="submit">下一步</p>
         </div>
     </div>
 </template>
@@ -20,8 +19,6 @@ export default {
     name: 'home',
     data() {
         return {
-            nullPic: require('src/assets/null.png'),
-            nextPic: require('src/assets/next.png'),
             opera: '',
             field: ''
         }
@@ -61,16 +58,19 @@ export default {
         }
     }
 }
+
 </script>
 <style lang="scss" scoped>
-@import '../../var.scss';
-.mid{
+// @import '../../var.scss';
+.mid {
     text-align: center;
 }
-.team-pic_no{
+
+.team-pic_no {
     width: 80px;
 }
-.btn-choose{
+
+.btn-choose {
     margin: 20px auto;
     padding: 0;
     width: 150px;
@@ -78,13 +78,14 @@ export default {
     color: #222;
     border: 1px solid #999;
     display: flex;
-    span{
+    span {
         width: 50%;
         display: inline-block;
         text-align: center;
     }
 }
-.btn-create::after{
+
+.btn-create::after {
     content: " ";
     display: inline-block;
     position: absolute;
@@ -93,13 +94,16 @@ export default {
     height: 35px;
     background-color: #999;
 }
-.on{
+
+.on {
     background-color: #222;
     color: #fff;
 }
-.team-pic_next{
+
+.team-pic_next {
     position: absolute;
     width: 30px;
     margin-left: 20px;
 }
+
 </style>

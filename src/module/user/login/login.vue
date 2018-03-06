@@ -13,6 +13,10 @@
 import {
     login
 } from '@/store/home'
+import {
+    testEmail,
+    testPwd
+} from 'assets/util'
 export default {
     name: 'login',
     data() {
@@ -50,12 +54,12 @@ export default {
             })
         },
         check(form) {
-            if (!form.eMail) {
-                alert('请输入用户名')
+            if (!testEmail(form.eMail)) {
+                form.eMail ? alert('请输入用户名') : alert('邮箱格式错误')
                 return
             }
-            if (!form.userPassword) {
-                alert('请输入用户密码')
+            if (!testPwd(form.userPassword)) {
+                form.userPassword ? alert('请输入密码') : alert('密码格式错误')
                 return
             }
             return true

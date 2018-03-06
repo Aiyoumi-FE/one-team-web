@@ -9,7 +9,6 @@
             <a href="javsscript:;" @click="goWeeklyConfig" v-if="isAdmin">设置</a>
             <el-button @click="creatWeekly">{{activeName == 'summary' ? '写总结' : '写周报'}}</el-button>
         </div>
-        
         <el-row :gutter="20" v-for="item in list" :key="item._id" class="list">
             <el-col :span="4" class="list-hd">
                 <img class="list-hd-pic" :src="item.phote | photoFilter" alt="">
@@ -134,6 +133,7 @@ export default {
     text-align: center;
     padding-top: 15px;
 }
+
 .list-hd-pic {
     width: 50px;
 }
@@ -170,4 +170,5 @@ export default {
     right: 10px;
     top: 80px;
 }
+
 </style>

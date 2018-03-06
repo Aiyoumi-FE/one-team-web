@@ -6,7 +6,6 @@
             <span class="add_btn">添加</span>
             <input class="search_input" type="text" v-model="searchContent">
             <span class="search_btn">搜索</span>
-
             <!-- <h3>我的关注</h3>
             <el-tag type="info">添加</el-tag>
             <el-input v-model="searchContent" placeholder="请输入内容"></el-input>
@@ -14,7 +13,7 @@
         </div>
         <!-- 列表区域 -->
         <ul v-if="focusList.length">
-            <li v-for="item in focusList">
+            <li v-for="item in focusList" :key="item.id">
                 <!-- <img :src="" alt=""> -->
                 <p class="focus_part part_name">
                     <span class="name_photo">
@@ -32,7 +31,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import {
     Tag
@@ -75,8 +73,8 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-.component_focus {
-}
+.component_focus {}
+
 .area_search {
     display: flex;
     align-items: center;
@@ -111,6 +109,7 @@ export default {
         margin-left: 5px;
     }
 }
+
 ul {
     position: relative;
     padding: 0;
@@ -124,6 +123,7 @@ ul {
         background: #e6e6e6;
     }
 }
+
 li {
     display: flex;
     align-items: center;
@@ -148,17 +148,21 @@ li {
         line-height: 50px;
     }
 }
+
 .part_name {
     flex: 1;
 }
+
 .focus_part {
     display: inline-block;
 }
+
 .part_btn {
     padding: 3px 8px;
     border-radius: 2px;
     background: #ccc;
 }
+
 .bg_empty {
     width: 170px;
     height: 250px;
@@ -173,4 +177,5 @@ li {
         color: #9a9a9a;
     }
 }
+
 </style>

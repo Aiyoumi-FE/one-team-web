@@ -10,7 +10,7 @@
             </div>
         </div>
         <ul class="ot-cells">
-            <li v-for="item in obj.memberList" class="ot-cell">
+            <li v-for="item in obj.memberList" :key="item.id" class="ot-cell">
                 <div class="cell-hd">
                     <img class="cell-hd-pic" :src="item.phote | photoFilter" alt="">
                 </div>

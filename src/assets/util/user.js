@@ -1,5 +1,5 @@
 // const md5 = require('js-md5')
-const Base64 = require('./base64')
+const Base64 = require('../js/base64')
 module.exports = {
     // encrypt: function(data) { // 密码加密
     //     var hash = md5.create()

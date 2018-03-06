@@ -9,7 +9,7 @@
                 <el-menu-item index="weeklyReport">周报</el-menu-item>
                 <el-menu-item index="team">团队</el-menu-item>
                 <el-menu-item index="notice" class="nav-notice">
-                    <img src="../../assets/icon/notice.png" alt="">
+                    <img src="../../../assets/icon/notice.png" alt="">
                 </el-menu-item>
                 <el-submenu index="center">
                     <template slot="title">我的头像</template>

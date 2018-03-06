@@ -2,8 +2,7 @@
     <div class="component_report">
         <div class="bd-date">
             <p class="bd-date_week">
-                <img class="bd-date_back" src="./img/back.png" alt="" @click="changeList(-7)">
-                {{dateInfo.year}}年  第{{dateInfo.weekNum}}周
+                <img class="bd-date_back" src="./img/back.png" alt="" @click="changeList(-7)"> {{dateInfo.year}}年 第{{dateInfo.weekNum}}周
                 <img class="bd-date_next" v-if="notEnd" src="./img/back.png" alt="" @click="changeList(7)">
             </p>
             <p class="bd-date_detail">{{dateInfo.begin}} - {{dateInfo.end}}</p>
@@ -12,9 +11,8 @@
             <!-- <template v-if="isSingle && reportContent">
                 <vue-markdown v-highlight :source="reportContent" class="cell-bd markdown padlr140"></vue-markdown>
             </template> -->
-
             <ul v-if="memberReportList.length" class="ot-cells">
-                <li v-for="item in memberReportList" class="ot-cell">
+                <li v-for="item in memberReportList" :key="item.id" class="ot-cell">
                     <report-unit :reportData="item"></report-unit>
                     <!-- <div class="cell-hd">
                         <img class="cell-hd-pic" :src="item.phote | photoFilter" alt="">
@@ -29,14 +27,13 @@
         </div>
     </div>
 </template>
-
 <script>
 import {
     getWeekDetail
 } from '@/store/weekly'
 import dateFormate from '../../../weekly/common/index'
 import VueMarkdown from 'vue-markdown'
-import reportUnit from 'src/module/components/reportunit/index'
+import reportUnit from '@/module/components/reportunit/index'
 
 export default {
     name: 'reportDetail',
@@ -142,27 +139,32 @@ export default {
     font-size: 16px;
     color: #999;
 }
+
 .bd-date_week {
     position: relative;
     display: inline-block;
     margin: 0 auto;
 }
+
 .bd-date_back {
     position: absolute;
     left: -34px;
     top: 4px;
 }
+
 .bd-date_next {
     position: absolute;
     right: -34px;
     top: 4px;
     transform: rotate(180deg);
 }
+
 .ot-cells:before {
     content: '';
     display: none;
 }
-.ot-cell{
+
+.ot-cell {
     padding: 10px 10px 20px;
 }
 
@@ -191,9 +193,11 @@ export default {
 .cell-bd {
     flex-grow: 1;
 }
+
 .padlr140 {
     padding: 0 140px;
 }
+
 .bg_empty {
     width: 170px;
     height: 250px;
@@ -208,4 +212,5 @@ export default {
         color: #9a9a9a;
     }
 }
+
 </style>

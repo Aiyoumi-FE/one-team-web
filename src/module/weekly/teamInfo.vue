@@ -1,14 +1,13 @@
 <template>
     <div>
         <div class="bd-date" v-if="showType == 'memberList'">
-            <p class="bd-date_week" >
+            <p class="bd-date_week">
                 {{teamName}}成员列表
             </p>
         </div>
         <div class="bd-date" v-else>
             <p class="bd-date_week">
-                <img class="bd-date_back" src="./img/back.png" alt="" @click="changeList(-7)">
-                {{dateInfo.year}}年  第{{dateInfo.weekNum}}周 {{titleTxt}}
+                <img class="bd-date_back" src="./img/back.png" alt="" @click="changeList(-7)"> {{dateInfo.year}}年 第{{dateInfo.weekNum}}周 {{titleTxt}}
                 <img class="bd-date_next" v-if="notEnd" src="./img/back.png" alt="" @click="changeList(7)">
             </p>
             <p class="bd-date_detail">{{dateInfo.begin}} - {{dateInfo.end}}</p>
@@ -27,7 +26,7 @@
             </section>
             <section v-if="showType == 'memberReport'">
                 <ul class="ot-cells">
-                    <li v-for="item in memberReportLsit" class="ot-cell">
+                    <li v-for="item in memberReportLsit" :key="item.id" class="ot-cell">
                         <div class="cell-hd">
                             <img class="cell-hd-pic" :src="item.phote | photoFilter" alt="">
                             <p class="cell-hd-name">{{item.userId.nickName}}</p>
@@ -38,7 +37,7 @@
             </section>
             <section v-if="showType == 'memberList'">
                 <ul class="ot-cells">
-                    <li v-for="item in teamMemberList" class="ot-cell">
+                    <li v-for="item in teamMemberList" :key="item.id" class="ot-cell">
                         <div class="cell-hd">
                             <img class="cell-hd-pic" :src="item.phote | photoFilter" alt="">
                             <p class="cell-hd-name">{{item.nickName}}<span class="admin" v-if="item._id == dateInfo.administrator">管理员</span></p>
@@ -50,7 +49,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import {
     getWeekList,
@@ -59,7 +57,6 @@ import {
 import {
     getTeamInfo
 } from '@/store/team'
-import rHeader from '../header/index'
 import dateFormate from './common/index'
 import VueMarkdown from 'vue-markdown'
 
@@ -84,7 +81,6 @@ export default {
         }
     },
     components: {
-        rHeader,
         VueMarkdown
     },
     filters: {
@@ -191,16 +187,19 @@ export default {
     font-size: 16px;
     color: #999;
 }
+
 .bd-date_week {
     position: relative;
     display: inline-block;
     margin: 0 auto;
 }
+
 .bd-date_back {
     position: absolute;
     left: -34px;
     top: 4px;
 }
+
 .bd-date_next {
     position: absolute;
     right: -34px;
@@ -208,7 +207,7 @@ export default {
     transform: rotate(180deg);
 }
 
-.ot-cell{
+.ot-cell {
     padding: 10px 10px 20px;
 }
 
@@ -271,7 +270,6 @@ export default {
     flex-grow: 1;
 }
 
-.btn_back {
+.btn_back {}
 
-}
 </style>

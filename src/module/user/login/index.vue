@@ -19,7 +19,6 @@ export default {
 
 </script>
 <style lang='scss' scoped>
-@import '../../../assets/style/base.scss';
 .login {
     position: absolute;
     width: 100%;

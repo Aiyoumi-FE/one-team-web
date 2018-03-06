@@ -4,7 +4,7 @@ const register = () => import(/* webpackChunkName: 'user_register' */ '../module
 const settings = () => import(/* webpackChunkName: 'user_settings' */ '../module/user/settings/index')
 const mysub = () => import(/* webpackChunkName: 'user_mysub' */ '../module/user/subscript/index')
 const myhome = () => import(/* webpackChunkName: 'user_myhome' */ '../module/user/center/myhome')
-const App = () => import(/* webpackChunkName: 'app' */ '../module/index')
+const App = () => import(/* webpackChunkName: 'index' */ '../module/index')
 
 export default [{
     path: '/page',

@@ -2,7 +2,7 @@ const teamList = () => import(/* webpackChunkName: 'team_list' */ '../module/tea
 const teamJoin = () => import(/* webpackChunkName: 'team_join' */ '../module/team/join')
 const teamTree = () => import(/* webpackChunkName: 'team_tree' */ '../module/team/tree')
 const teamDashBoard = () => import(/* webpackChunkName: 'team_dashboard' */ '../module/team/dashboard')
-const App = () => import(/* webpackChunkName: 'app' */ '../module/index')
+const App = () => import(/* webpackChunkName: 'index' */ '../module/index')
 
 export default [{
     path: '/page',

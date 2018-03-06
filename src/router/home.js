@@ -1,6 +1,6 @@
 const home = () => import(/* webpackChunkName: 'home' */ '../module/home/index')
 const refuse = () => import(/* webpackChunkName: 'refuse' */ '../module/common/refuse')
-const App = () => import(/* webpackChunkName: 'app' */ '../module/index')
+const App = () => import(/* webpackChunkName: 'index' */ '../module/index')
 
 export default [{
     path: '/page',

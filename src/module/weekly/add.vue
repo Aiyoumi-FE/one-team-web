@@ -124,7 +124,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../assets/style/base.scss';
-@import '~simplemde/dist/simplemde.min.css';
+// @import '~simplemde/dist/simplemde.min.css';
 .add-link {
     position: absolute;
     left: 10px;

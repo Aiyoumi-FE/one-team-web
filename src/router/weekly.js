@@ -2,7 +2,7 @@ const weeklyList = () => import(/* webpackChunkName: 'weekly_list' */ '../module
 const weeklyDetail = () => import(/* webpackChunkName: 'weekly_detail' */ '../module/weekly/add')
 const weeklyConfig = () => import(/* webpackChunkName: 'weekly_config' */ '../module/weekly/config')
 const teamInfo = () => import(/* webpackChunkName: 'team_info' */ '../module/weekly/teamInfo')
-const App = () => import(/* webpackChunkName: 'app' */ '../module/index')
+const App = () => import(/* webpackChunkName: 'index' */ '../module/index')
 
 export default [{
     path: '/page',

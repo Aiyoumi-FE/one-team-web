@@ -109,18 +109,18 @@ export default {
         back() {
             this.$router.go(-1)
         },
-        handleClick(tab, val) {
-        }
+        handleClick(tab, val) {}
     }
 }
 
 </script>
 <style lang="scss" scoped>
-@import '~simplemde/dist/simplemde.min.css';
+// @import '~simplemde/dist/simplemde.min.css';
 .config-link {
     position: absolute;
     top: 10px;
 }
+
 .config-title {
     text-align: center;
 }
@@ -130,4 +130,5 @@ export default {
     right: 10px;
     top: 0px;
 }
+
 </style>

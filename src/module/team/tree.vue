@@ -19,7 +19,8 @@
             <div class="part_right">
                 <h3>{{currentTeam.name}}</h3>
                 <p class="btn_addmem" @click="dgMMShow = true" v-if="teamList.length">添加成员</p>
-                <el-table ref="multipleTable" :data="teamDetail" tooltip-effect="blue" style="width: 100%"> <!-- max-height="500" -->
+                <el-table ref="multipleTable" :data="teamDetail" tooltip-effect="blue" style="width: 100%">
+                    <!-- max-height="500" -->
                     <el-table-column type="selection" width="55">
                     </el-table-column>
                     <el-table-column prop="nickName" label="姓名" width="80">
@@ -135,7 +136,7 @@
                         </div>
                         <div v-else class="content_email">
                             <p class="block_input">
-                                <p class="line_input" v-for="n in emailList.length">
+                                <p class="line_input" v-for="n in emailList.length" :key="n.id">
                                     <label for="email">邮箱：</label>
                                     <input name="email" type="text" v-model="emailList[n-1]">
                                     <span class="btn_delete" v-show="emailList.length > 1" @click="deleteEmail(n-1)"></span>
@@ -427,6 +428,7 @@ export default {
         }
     }
 }
+
 </script>
 <style lang="scss" scoped>
 * {
@@ -469,14 +471,17 @@ export default {
         color: #fff;
     }
 }
+
 .shadow {
     border: 1px solid #ccc;
     background: #fff;
     box-shadow: 0 0 15px 0 #999;
 }
+
 .title {
     padding-left: 10px;
 }
+
 .page_TM {
     position: relative;
     min-height: 400px;
@@ -691,4 +696,5 @@ export default {
         background-size: contain;
     }
 }
+
 </style>

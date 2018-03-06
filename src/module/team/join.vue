@@ -8,7 +8,7 @@
             <h4>邮件邀请</h4>
             <!-- <input type="text" class="input" placeholder="请输入新成员的邮箱" v-model="email"> -->
             <div class="email-input">
-                <p v-for="item in email">
+                <p v-for="item in email" :key="item.id">
                     <input type="text" class="input" placeholder="请输入新成员的邮箱" v-model="item.value">
                 </p>
                 <img src="./image/add.png" alt="" @click="add" class="add">
@@ -37,7 +37,7 @@ export default {
                 value: '',
                 imagePath: require('@/assets/logo.png')
             },
-            email: [{value: ''}]
+            email: [{ value: '' }]
         }
     },
     components: {
@@ -74,24 +74,27 @@ export default {
             })
         },
         add() {
-            this.email.push({value: ''})
+            this.email.push({ value: '' })
         }
     }
 }
+
 </script>
 <style lang="scss" scoped>
-.mid{
+.mid {
     text-align: center;
 }
-.team-pic_no{
+
+.team-pic_no {
     width: 80px;
 }
-.email-input{
+
+.email-input {
     position: relative;
-    p{
+    p {
         position: relative;
     }
-    .add{
+    .add {
         position: absolute;
         left: 230px;
         bottom: 5px;
