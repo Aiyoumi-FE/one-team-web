@@ -55,11 +55,11 @@ export default {
         },
         check(form) {
             if (!testEmail(form.eMail)) {
-                form.eMail ? alert('请输入用户名') : alert('邮箱格式错误')
+                form.eMail ? alert('邮箱格式错误') : alert('请输入用户名')
                 return
             }
             if (!testPwd(form.userPassword)) {
-                form.userPassword ? alert('请输入密码') : alert('密码格式错误')
+                form.userPassword ? alert('密码格式错误') : alert('请输入密码')
                 return
             }
             return true

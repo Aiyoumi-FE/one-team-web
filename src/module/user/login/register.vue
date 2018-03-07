@@ -25,6 +25,11 @@ import {
 import {
     register
 } from '@/store/home'
+import {
+    testEmail,
+    testPwd,
+    testName
+} from 'assets/util'
 export default {
     name: 'register',
     data() {
@@ -81,20 +86,20 @@ export default {
             })
         },
         check(form) {
-            if (!form.eMail) {
-                alert('请输入用户邮箱')
+            if (!testEmail(form.eMail)) {
+                form.eMail ? alert('邮箱格式错误') : alert('请输入用户名')
                 return
             }
-            if (!form.nickName) {
-                alert('请输入昵称')
+            if (!testName(form.nickName)) {
+                form.nickName ? alert('昵称格式错误') : alert('请输入昵称')
                 return
             }
-            if (!form.userPassword) {
-                alert('请输入用户密码')
+            if (!testPwd(form.userPassword)) {
+                form.userPassword ? alert('密码格式错误') : alert('请输入密码')
                 return
             }
-            if (!form.userPassword === form.confirmPassword) {
-                alert('两次密码不一致')
+            if (!(form.userPassword === form.confirmPassword)) {
+                form.confirmPassword ? alert('两次密码不一致') : alert('请再次输入密码')
                 return
             }
             if (this.teamStatus && !form.teamName) {

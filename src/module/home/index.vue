@@ -38,16 +38,7 @@ export default {
             }
         }
     },
-    mounted() {
-        // this.initData()
-    },
     methods: {
-        // initData() {
-        //     this.nickName = base64.decode(cookie.get('name'))
-        //     if (!this.nickName) {
-        //         util.login()
-        //     }
-        // },
         updateXY(event) {
             this.moveX = (event.offsetX - this.midWidth) / 20
             this.moveY = (event.offsetY - this.btHeight) / 20
@@ -57,27 +48,15 @@ export default {
 
 </script>
 <style lang='scss' scoped>
-body {
-    background-color: #fff;
-}
-
 .home {
+    position: absolute;
     width: 100%;
     height: 100%;
-    margin-bottom: 100px; // padding-top: 200px;
+    background-color: #fff;
 }
-
-.btn {
-    border: 0;
-}
-
 .hello {
-    position: relative;
     z-index: 1;
-    overflow: hidden;
-    width: 80%;
     min-height: 250px;
-    margin: 0 auto;
     text-align: center; // margin: 120px auto;
     color: #56332f;
     font-size: 20px;
@@ -90,19 +69,12 @@ body {
 }
 
 .ft {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    padding-top: 305px;
     text-align: center;
-    .image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: -1
-    }
+    z-index: 1;
     .sub {
         background-color: #56332f;
     }
