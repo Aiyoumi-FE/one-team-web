@@ -1,5 +1,6 @@
 import {
-    _post
+    _post,
+    _postPromise
 } from '../assets/js/ajax'
 
 /* ================登陆================= */
@@ -27,8 +28,16 @@ export const signout = (callback) => {
     })
 }
 
+/* 获取用户信息 */
 export const getUsrInfo = (params, callback) => {
-    return _post('/api/user/getUsrInfo', params, (data) => {
+    return _postPromise('/user/getUsrInfo', params, (data) => {
+        callback(data)
+    })
+}
+
+/* 个人设置--更新信息 */
+export const updateUserInfo = (params, callback) => {
+    return _postPromise('/user/updateUserInfo', params, (data) => {
         callback(data)
     })
 }

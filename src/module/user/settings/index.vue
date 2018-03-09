@@ -120,25 +120,27 @@
 </template>
 <script>
 import {
-    signout
+    signout,
+    getUsrInfo,
+    updateUserInfo
 } from '@/store/home'
 import {
     Collapse,
     CollapseItem
 } from 'element-ui'
 export default {
-    name: 'members-settings',
+    name: 'personal-settings',
     data() {
         return {
-            nickName: '',
-            activeNames: '',
             editflag: '',
             user: {
                 name: '李天霸',
                 email: 'tianba@ico.com',
-                phone: '15268175233'
+                phone: '15268175233',
+                avator: ''
             },
             userEdit: {
+                uid: '',
                 name: '',
                 email: '',
                 emailPwd: '',
@@ -150,6 +152,11 @@ export default {
                 passwordNewConfirm: ''
             },
             btnTxt: '编辑'
+        }
+    },
+    computed: {
+        userID() {
+            return window.localStorage.getItem('uid')
         }
     },
     filters: {
@@ -164,7 +171,28 @@ export default {
         'el-collapse': Collapse,
         'el-collapse-item': CollapseItem
     },
+    created() {
+        if (this.userID) {
+            this.initInfo()
+        }
+    },
     methods: {
+        /**
+         * initialize user info
+         */
+        initInfo() {
+            // let userId = this.userID
+            getUsrInfo().then((res) => {
+                if (res.success) {
+
+                } else {
+
+                }
+            })
+        },
+        /**
+         * sign out team
+         */
         submitSignout() {
             signout((res) => {
                 if (res.success) {
@@ -176,6 +204,11 @@ export default {
                 }
             })
         },
+        /**
+         * upload photo
+         *
+         * @param      {<type>}  e       { parameter_description }
+         */
         upImg(e) {
             console.log(e)
             let file = e.target.files[0]
@@ -203,6 +236,11 @@ export default {
                 }
             }
         },
+        /**
+         * Sets the editing flag.
+         *
+         * @param      {string}  item    The item
+         */
         setEditFlag(item) {
             if (this.editflag === item) {
                 this.editflag = ''
@@ -210,8 +248,16 @@ export default {
                 this.editflag = item
             }
         },
-        saveInfo(item) {
+        /**
+         * update user info
+         *
+         * @param      {<type>}  item    The item
+         */
+        updateInfo(item) {
+            this.userEdit.uid = this.selfUserID
+            updateUserInfo().then((res) => {
 
+            })
         }
     }
 }
@@ -274,11 +320,9 @@ h2 {
 
 .part_photo {
     height: 90px;
-    font-size: 14px;
     clear: left;
     line-height: 40px;
     position: relative;
-    /*border-bottom: 1px solid #999;*/
     p {
         line-height: 1.5rem;
     }
