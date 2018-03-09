@@ -7,7 +7,7 @@
         <date-el v-on:dateBack="changeList"></date-el>
         <div class="list-write">
             <a href="javsscript:;" @click="goWeeklyConfig" v-if="isAdmin">设置</a>
-            <el-button @click="creatWeekly">{{activeName == 'summary' ? '写总结' : '写周报'}}</el-button>
+            <el-button @click="creatWeekly" v-if="write">{{activeName == 'summary' ? '写总结' : '写周报'}}</el-button>
         </div>
         <el-row :gutter="20" v-for="item in list" :key="item._id" class="list">
             <el-col :span="4" class="list-hd">
@@ -70,6 +70,9 @@ export default {
         },
         tarUserId() {
             return this.$route.query.id || ''
+        },
+        write() {
+            return !(this.activeName === 'summary' && !this.isAdmin)
         }
     },
     mounted() {
@@ -92,6 +95,7 @@ export default {
                 }
                 this.loading = false
             })
+            console.log(this.write)
         },
         creatWeekly() {
             this.$router.push({
@@ -121,7 +125,6 @@ export default {
         },
         handleClick(tab, event) {
             this.initData()
-            console.log(tab, event)
         }
     }
 }

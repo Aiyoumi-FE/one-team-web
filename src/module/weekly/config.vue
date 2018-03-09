@@ -63,7 +63,13 @@ export default {
         initData() {
             getWeeklyConfig().then((res) => {
                 if (res.success) {
-                    this.resultTemplate = res.result
+                    if (res.result.weeklyTemplate) {
+                        console.log('sss')
+                        this.resultTemplate.weeklyTemplate = res.result.weeklyTemplate
+                    }
+                    if (res.result.summaryTemplate) {
+                        this.resultTemplate.summaryTemplate = res.result.summaryTemplate
+                    }
                 } else {
                     alert(res.resultDes)
                 }
@@ -114,8 +120,8 @@ export default {
 }
 
 </script>
-<style lang="scss" scoped>
-// @import '~simplemde/dist/simplemde.min.css';
+<style lang="scss">
+@import 'simplemde/dist/simplemde.min.css';
 .config-link {
     position: absolute;
     top: 10px;

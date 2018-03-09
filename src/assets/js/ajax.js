@@ -58,7 +58,11 @@ export const _post = (url, data, callback, catchCallback) => {
 
 export const _postPromise = (url, data) => {
     return new Promise((resolve, reject) => {
-        Axios.post(url, data).then((response) => {
+        Axios.post(url, data, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then((response) => {
             resolve(response.data)
         }, (response) => {
             resolve(response)

@@ -72,9 +72,16 @@ export default {
             this.form.photo = this.photo
             register(this.form, (res) => {
                 if (res.success) {
-                    this.$router.replace({
-                        name: 'home'
-                    })
+                    localStorage.setItem('token', res.token)
+                    console.log(res.token)
+                    let timer = setTimeout(() => {
+                        if (localStorage.getItem('token') === res.token) {
+                            clearTimeout(timer)
+                            this.$router.replace({
+                                name: 'home'
+                            })
+                        }
+                    }, 10)
                 } else {
                     alert(res.resultDes)
                 }

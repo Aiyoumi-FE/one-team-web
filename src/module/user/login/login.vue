@@ -34,7 +34,7 @@ export default {
             }
             login(this.form, (res) => {
                 if (res.success) {
-                    localStorage.setItem('uid', res.result._id)
+                    localStorage.setItem('token', res.token)
                     if (this.$route.query.backUrl) {
                         window.location.href = this.$route.query.backUrl
                     } else {

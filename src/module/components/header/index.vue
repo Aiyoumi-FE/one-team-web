@@ -6,7 +6,7 @@
             </div>
             <el-menu :default-active="'home'" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-menu-item index="home">面板</el-menu-item>
-                <el-menu-item index="weeklyReport">周报</el-menu-item>
+                <el-menu-item index="weeklyReport">汇报</el-menu-item>
                 <el-menu-item index="team">团队</el-menu-item>
                 <el-menu-item index="notice" class="nav-notice">
                     <img src="../../../assets/icon/notice.png" alt="">
@@ -48,12 +48,10 @@ export default {
     },
     methods: {
         handleSelect(key, keyPath) {
-            console.log(key, keyPath)
             if (key === 'signout') {
                 this.submitSignout()
             } else {
                 let nameLink = this.routerLink[key]
-                console.log('target name:' + nameLink)
                 if (nameLink) {
                     this.$router.push({
                         name: nameLink
@@ -65,9 +63,9 @@ export default {
             this.$http.post('/user/signout')
                 .then((response) => {
                     const res = response.data
-
                     if (res.success) {
-                        cookie.clear('token', '/')
+                        localStorage.removeItem('token')
+                        cookie.clear('team', '/')
                         cookie.clear('name', '/')
                         this.$router.replace({
                             name: 'login'

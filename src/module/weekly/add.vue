@@ -2,7 +2,7 @@
     <div>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="个人周报" name="weekly"></el-tab-pane>
-            <el-tab-pane label="小组总结" name="summary"></el-tab-pane>
+            <el-tab-pane label="小组总结" name="summary" v-if="isAdmin"></el-tab-pane>
         </el-tabs>
         <a href="javascript:;" class="add-link" @click="back()">返回列表</a>
         <date-el v-on:dateBack="changeDetail">
@@ -36,8 +36,9 @@ export default {
             },
             obj: {
                 content: '',
-                type: this.$route.query.type
+                type: this.$route.query.type,
             },
+            isAdmin: false,
             isEdit: true,
             activeName: this.$route.query.type
         }
@@ -76,6 +77,7 @@ export default {
             }).then((res) => {
                 if (res.success) {
                     this.obj = res.result
+                    this.isAdmin = res.isAdmin
                 } else {
                     alert(res.resultDes)
                 }
@@ -122,9 +124,9 @@ export default {
 }
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../../assets/style/base.scss';
-// @import '~simplemde/dist/simplemde.min.css';
+@import 'simplemde/dist/simplemde.min.css';
 .add-link {
     position: absolute;
     left: 10px;
