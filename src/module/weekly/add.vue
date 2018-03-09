@@ -36,7 +36,7 @@ export default {
             },
             obj: {
                 content: '',
-                type: this.$route.query.type,
+                type: this.$route.query.type
             },
             isAdmin: false,
             isEdit: true,
