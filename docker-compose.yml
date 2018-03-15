@@ -1,0 +1,15 @@
+# create a docker-compose.yml file
+version: "2"
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    volumes:
+      - .:/app
+      #- ./package.json:/app/package.json:z
+      #- ./src:/app/src
+      #- ./config:/app/config
+      #- ./build:/app/build
