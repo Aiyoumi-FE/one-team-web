@@ -51,11 +51,11 @@
 </template>
 <script>
 import {
-    getWeekList,
-    getWeekDetail
-} from '@/store/weekly'
+    getReportList,
+    getReportDetail
+} from '@/store/report'
 import {
-    getTeamInfo
+    getMembers
 } from '@/store/team'
 import dateFormate from './common/index'
 import VueMarkdown from 'vue-markdown'
@@ -113,7 +113,7 @@ export default {
     methods: {
         loadData(type = this.showType, beginDate = this.beginDate) {
             if (type === 'teamReport') {
-                getWeekDetail({
+                getReportDetail({
                     beginDate,
                     teamId: this.teamId,
                     type: 'summary'
@@ -123,7 +123,7 @@ export default {
                     }
                 })
             } else if (type === 'memberReport') {
-                getWeekList({
+                getReportList({
                     beginDate,
                     teamId: this.teamId
                 }).then((res) => {
@@ -134,7 +134,7 @@ export default {
                     }
                 })
             } else {
-                getTeamInfo({
+                getMembers({
                     teamId: this.teamId
                 }).then((res) => {
                     if (res.success) {

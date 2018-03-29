@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-input v-model.trim="form.eMail" class="login-input" placeholder="登录邮箱"></el-input>
-        <el-input v-model.trim="form.userPassword" class="login-input" placeholder="密码"></el-input>
+        <el-input v-model.trim="form.userPassword" class="login-input" placeholder="密码" type="password"></el-input>
         <p>忘记登录密码</p>
         <el-button type="primary" @click="submitLogin" class="login-btn">登录</el-button>
         <p>还没有加入One Team ？
@@ -11,8 +11,8 @@
 </template>
 <script>
 import {
-    login
-} from '@/store/home'
+    signIn
+} from '@/store/user'
 import {
     testEmail,
     testPwd
@@ -32,20 +32,17 @@ export default {
             if (!this.check(this.form)) {
                 return
             }
-            login(this.form, (res) => {
-                if (res.success) {
-                    localStorage.setItem('token', res.token)
-                    if (this.$route.query.backUrl) {
-                        window.location.href = this.$route.query.backUrl
-                    } else {
-                        console.log('登录成功')
-                        this.$router.replace({
-                            name: 'home'
-                        })
-                    }
+            signIn(this.form).then((res) => {
+                localStorage.setItem('token', res.token)
+                if (this.$route.query.url) {
+                    window.location.href = this.$route.query.url
                 } else {
-                    alert(res.resultDes)
+                    this.$router.replace({
+                        name: 'home'
+                    })
                 }
+            }).catch(error => {
+                console.log(error.error)
             })
         },
         goRegsiter() {
@@ -79,6 +76,7 @@ export default {
 
 p {
     text-align: left;
+    padding: 10px 0;
 }
 
 </style>

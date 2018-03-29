@@ -1,11 +1,11 @@
 import home from './home'
 import user from './user'
-import weekly from './weekly'
+import report from './report'
 import team from './team'
 
 export default [
     ...home,
     ...user,
-    ...weekly,
+    ...report,
     ...team
 ]

@@ -6,7 +6,7 @@
             </div>
             <el-menu :default-active="'home'" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-menu-item index="home">面板</el-menu-item>
-                <el-menu-item index="weeklyReport">汇报</el-menu-item>
+                <el-menu-item index="report">汇报</el-menu-item>
                 <el-menu-item index="team">团队</el-menu-item>
                 <el-menu-item index="notice" class="nav-notice">
                     <img src="../../../assets/icon/notice.png" alt="">
@@ -23,6 +23,9 @@
 </template>
 <script>
 import {
+    signOut
+} from '@/store/user'
+import {
     Menu,
     Submenu,
     MenuItem
@@ -34,7 +37,7 @@ export default {
         return {
             routerLink: {
                 home: 'teamDashBoard',
-                weeklyReport: 'weeklyList',
+                report: 'reportList',
                 team: 'teamList',
                 personalCenter: 'personalCenter',
                 settings: 'settings'
@@ -60,20 +63,16 @@ export default {
             }
         },
         submitSignout() {
-            this.$http.post('/user/signout')
-                .then((response) => {
-                    const res = response.data
-                    if (res.success) {
-                        localStorage.removeItem('token')
-                        cookie.clear('team', '/')
-                        cookie.clear('name', '/')
-                        this.$router.replace({
-                            name: 'login'
-                        })
-                    } else {
-                        alert(res.resultDes)
-                    }
+            signOut().then((res) => {
+                localStorage.removeItem('token')
+                cookie.clear('team', '/')
+                cookie.clear('name', '/')
+                this.$router.replace({
+                    name: 'login'
                 })
+            }).catch(error => {
+                console.log(error.error)
+            })
         }
     }
 }

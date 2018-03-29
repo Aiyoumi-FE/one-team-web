@@ -29,9 +29,9 @@
 </template>
 <script>
 import {
-    getWeekDetail
-} from '@/store/weekly'
-import dateFormate from '../../../weekly/common/index'
+    getReportDetail
+} from '@/store/report'
+import dateFormate from '../../../report/common/index'
 import VueMarkdown from 'vue-markdown'
 import reportUnit from '@/module/components/reportunit/index'
 
@@ -83,7 +83,7 @@ export default {
     },
     methods: {
         loadData() {
-            getWeekDetail({
+            getReportDetail({
                 beginDate: this.beginDate,
                 userId: this.userId
             }).then((res) => {

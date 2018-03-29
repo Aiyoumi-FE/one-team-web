@@ -1,16 +1,18 @@
 <template>
     <div>
+        <date-el v-on:dateBack="changeDetail">
+            <p slot="header" class="add-des">{{des}}</p>
+        </date-el>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="个人周报" name="weekly"></el-tab-pane>
             <el-tab-pane label="小组总结" name="summary" v-if="isAdmin"></el-tab-pane>
         </el-tabs>
-        <a href="javascript:;" class="add-link" @click="back()">返回列表</a>
-        <date-el v-on:dateBack="changeDetail">
-            <p slot="header" class="add-des">{{des}}</p>
-        </date-el>
+        <div class="add-box">
+            <markdown-editor v-if="isEdit" v-model="obj.content" ref="markdownEditor" :configs="configs"></markdown-editor>
+            <report-entry v-else :reportData="previewDate | reportFilter" :key="obj.id"></report-entry>
+        </div>
         <el-button class="add-btn" @click="btnActive(activeName)">{{isEdit? '保存' : '编辑'}}</el-button>
-        <markdown-editor v-if="isEdit" v-model="obj.content" ref="markdownEditor" :configs="configs"></markdown-editor>
-        <vue-markdown v-else :source="obj.content" v-highlight></vue-markdown>
+        <a href="javascript:;" class="add-link" @click="back()">返回列表</a>
     </div>
 </template>
 <script>
@@ -21,11 +23,11 @@ import {
 import dateFormate from './common/index'
 import dateEl from './common/date'
 import {
-    getWeekDetail,
-    saveWeekDetail
-} from '@/store/weekly'
-import VueMarkdown from 'vue-markdown'
+    getReportDetail,
+    saveReportDetail
+} from '@/store/report'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
+import reportEntry from 'module/components/report/entry'
 export default {
     name: 'weekly',
     data() {
@@ -38,6 +40,7 @@ export default {
                 content: '',
                 type: this.$route.query.type
             },
+            user: {},
             isAdmin: false,
             isEdit: true,
             activeName: this.$route.query.type
@@ -45,7 +48,7 @@ export default {
     },
     components: {
         dateEl,
-        VueMarkdown,
+        reportEntry,
         markdownEditor,
         'el-tabs': Tabs,
         'el-tab-pane': TabPane
@@ -59,6 +62,19 @@ export default {
         },
         des() {
             return this.activeName === 'summary' ? '本周小组总结' : '本周周报'
+        },
+        previewDate() {
+            return Object.assign(this.user, this.obj)
+        }
+    },
+    filters: {
+        reportFilter(obj) {
+            return {
+                head: obj.phote,
+                name: obj.nickName,
+                date: dateFormate.format(obj.createTime),
+                content: obj.content
+            }
         }
     },
     watch: {
@@ -71,16 +87,16 @@ export default {
     },
     methods: {
         initData() {
-            getWeekDetail({
+            getReportDetail({
                 beginDate: this.beginDate,
                 type: this.activeName
             }).then((res) => {
-                if (res.success) {
-                    this.obj = res.result
-                    this.isAdmin = res.isAdmin
-                } else {
-                    alert(res.resultDes)
-                }
+                this.user = res.user
+                this.obj = res.detail
+                this.isAdmin = res.isAdmin
+                console.log(res)
+            }).catch(error => {
+                console.log(error.error)
             })
         },
         btnActive() {
@@ -92,17 +108,15 @@ export default {
                 beginDate: this.beginDate,
                 type: this.activeName
             })
-            saveWeekDetail(this.obj).then((res) => {
-                if (res.success) {
-                    this.isEdit = false
-                } else {
-                    alert(res.resultDes)
-                }
+            saveReportDetail(this.obj).then((res) => {
+                this.isEdit = false
+            }).catch(error => {
+                console.log(error.error)
             })
         },
         changeDetail(val) {
             this.$router.push({
-                name: 'weeklyDetail',
+                name: 'reportDetail',
                 query: {
                     beginDate: val,
                     type: this.activeName
@@ -111,7 +125,7 @@ export default {
         },
         back() {
             this.$router.push({
-                name: 'weeklyList',
+                name: 'reportList',
                 query: {
                     beginDate: Date.parse(this.beginDate)
                 }
@@ -127,20 +141,17 @@ export default {
 <style lang="scss">
 @import '../../assets/style/base.scss';
 @import 'simplemde/dist/simplemde.min.css';
-.add-link {
-    position: absolute;
-    left: 10px;
-    top: 80px;
-}
-
-.add-btn {
-    position: absolute;
-    right: 10px;
-    top: 80px;
+.add-box {
+    margin-bottom: 20px;
+    min-height: 370px;
 }
 
 .add-des {
     font-size: $fontSizeLevel3;
+}
+
+/deep/ .report-entry {
+    border-bottom: 0;
 }
 
 </style>

@@ -1,84 +1,71 @@
-import util from 'assets/util'
-import Axios from 'axios'
-const _ajax = (obj) => {
-    obj = obj || {}
-    obj.type = (obj.type || 'GET').toUpperCase()
-    obj.dataType = obj.dataType || 'json'
+import axios from 'axios'
 
-    var params = _formatParams(obj.data)
-    var xhr
-
-    if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest()
-    } else {
-        // xhr = new AxtiveXObject('Microsoft.XMLHTTP')
+const formatRes = (res) => {
+    if (res.success) {
+        return Promise.resolve(res.result)
     }
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-            if (xhr.status >= 200 && xhr.status < 300) {
-                if (obj.success) {
-                    let response = JSON.parse(xhr.responseText)
-                    response.code === '-1999' ? util.login() : obj.success(response, xhr.responseXML)
-                }
-            } else {
-                obj.error && obj.error(xhr.status)
-            }
-        }
+    let url = window.location.href
+    if (res.code === -1999) {
+        this.$router.push({
+            name: 'login',
+            query: { url }
+        })
+        return false
     }
-
-    if (obj.type === 'GET') {
-        xhr.open('GET', obj.url + '?' + params, true)
-        xhr.send(null)
-    } else if (obj.type === 'POST') {
-        xhr.open('POST', obj.url, true)
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-        xhr.send(params)
-    }
+    return Promise.reject(res)
 }
 
-// 格式化参数
-const _formatParams = (data) => {
-    var arr = []
-    for (var name in data) {
-        arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]))
-    }
-    // 清除缓存
-    arr.push('t=' + Math.random())
-    return arr.join('&')
-}
+// add header
+axios.interceptors.request.use((config) => {
+    config.withCredentials = true
+    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+    return config
+}, (error) => {
+    console.log('request-error:', error)
+    return Promise.reject(error)
+})
 
-export const _post = (url, data, callback, catchCallback) => {
-    _ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        success: callback
+// format response
+axios.interceptors.response.use((response) => {
+    return formatRes(response.data)
+})
+
+export const _getPromise = (url, data = {}) => {
+    return axios.get(url, { params: data }).then(response => {
+        return Promise.resolve(response)
+    }).catch((error) => {
+        return Promise.reject(error)
     })
 }
 
-export const _postPromise = (url, data) => {
-    return new Promise((resolve, reject) => {
-        Axios.post(url, data, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then((response) => {
-            resolve(response.data)
-        }, (response) => {
-            resolve(response)
-        })
-    }).catch((err) => {
-        alert('sorry, sth\'s wrong:' + err.message)
+export const _postPromise = (url, data = {}) => {
+    return axios.post(url, data).then(response => {
+        return Promise.resolve(response)
+    }).catch((error) => {
+        return Promise.reject(error)
     })
 }
-export const _getPromise = (url, data) => {
-    return new Promise((resolve, reject) => {
-        Axios.get(url, data).then((response) => {
-            resolve(response.data)
-        }, (response) => {
-            resolve(response)
-        })
-    }).catch((err) => {
-        alert('sorry, sth\'s wrong:' + err.message)
+
+export const _putPromise = (url, data = {}) => {
+    return axios.put(url, data).then(response => {
+        return Promise.resolve(response)
+    }).catch((error) => {
+        return Promise.reject(error)
+    })
+}
+
+export const _patchPromise = (url, data = {}) => {
+    return axios.patch(url, data).then(response => {
+        return Promise.resolve(response)
+    }).catch((error) => {
+        return Promise.reject(error)
+    })
+}
+
+export const _deletePromise = (url, data = {}) => {
+    return axios.delete(url, data).then(response => {
+        return Promise.resolve(response)
+    }).catch((error) => {
+        return Promise.reject(error)
     })
 }

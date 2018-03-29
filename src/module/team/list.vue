@@ -1,35 +1,52 @@
 <template>
-    <div v-if="!loading">
-        <h1>{{obj.teamName}}</h1>
-        <div class="team-sub">
-            <span class="invate">邀请码：{{obj._id}}</span>
-            <div class="team-sub_btn">
-                <button v-if="obj.isAdmin" class="btn" @click="manageAction">{{manageText}}</button>
-                <button v-if="obj.isAdmin" class="btn" @click="invate">邀请新成员</button>
-                <button class="btn" @click="teamOpera('out')">退出团队</button>
+    <div v-if="!loading" class="team">
+        <div class="hd">
+            <div class="hd-name">
+                <h1 class="title">{{tableData.teamName}}</h1>
+                <span class="invate">邀请码：{{tableData._id}}</span>
+            </div>
+            <div>
+                <el-button size="small" v-if="tableData.isAdmin" @click="invate">邀请新成员</el-button>
+                <el-button size="small" @click="teamOpera('out')">退出团队</el-button>
             </div>
         </div>
-        <ul class="ot-cells">
-            <li v-for="item in obj.memberList" :key="item.id" class="ot-cell">
-                <div class="cell-hd">
-                    <img class="cell-hd-pic" :src="item.phote | photoFilter" alt="">
-                </div>
-                <div class="cell-bd">
-                    <p><span class="cell-hd-name">{{item.nickName}}</span><span class="admin" v-if="item._id == obj.administrator">管理员</span></p>
-                    <p>{{item.eMail}}</p>
-                </div>
-                <div v-if="managing && item._id != obj.administrator" class="cell-ft">
-                    <button v-if="obj.isAdmin" class="btn" @click="teamOpera('admin', item._id)">升级</button>
-                    <button class="btn" @click="teamOpera('del', item._id)">移除</button>
-                </div>
-            </li>
-        </ul>
+        <el-table :data="tableData.memberList" style="width: 100%">
+            <el-table-column label="成员" width="180">
+                <template slot-scope="scope">
+                    <div class="cell-hd">
+                        <img class="cell-hd-pic" :src="scope.row.phote | photoFilter" alt="">
+                        <span>{{ scope.row.nickName }}</span>
+                        <span class="admin" v-if="scope.row._id == tableData.administrator">管理员</span>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="邮箱" width="180">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.eMail }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="联系方式" width="180">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.phoneNumber }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
     </div>
 </template>
 <script>
 import {
-    changeTeamMemStatus,
-    getTeamInfo
+    Table,
+    TableColumn
+} from 'element-ui'
+import {
+    getMembers,
+    updateMembers
 } from '@/store/team'
 import TeamJoin from './join'
 
@@ -39,7 +56,7 @@ export default {
         return {
             loading: true,
             managing: false,
-            obj: {}
+            tableData: {}
         }
     },
     filters: {
@@ -48,7 +65,9 @@ export default {
         }
     },
     components: {
-        TeamJoin
+        TeamJoin,
+        'el-table': Table,
+        'el-table-column': TableColumn
     },
     computed: {
         manageText() {
@@ -60,17 +79,11 @@ export default {
     },
     methods: {
         initData() {
-            getTeamInfo().then((res) => {
-                // const res = response.data
-
-                if (res.success) {
-                    this.obj = res.result
-                } else {
-                    this.$router.replace({
-                        name: 'refuse'
-                    })
-                }
+            getMembers().then((res) => {
+                this.tableData = res
                 this.loading = false
+            }).catch(error => {
+                console.log(error)
             })
         },
         invate() {
@@ -87,7 +100,7 @@ export default {
                 alert('请先移交管理权限')
                 return
             }
-            changeTeamMemStatus({
+            updateMembers({
                 opera: str,
                 userId: id
             }).then((res) => {
@@ -95,6 +108,8 @@ export default {
                     this.managing = !this.managing
                 }
                 this.initData()
+            }).catch(error => {
+                console.log(error.error)
             })
         }
     }
@@ -104,18 +119,15 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/style/base.scss';
 h1 {
-    font-size: $fontSizeLevel4;
+    display: inline-block;
+    font-size: 28px;
 }
 
-.team-sub {
+.hd {
     display: flex;
     justify-content: space-between;
-    .team-sub_btn {
-        display: flex;
-        .btn {
-            margin-right: 10px;
-        }
-    }
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .invate {
@@ -126,60 +138,25 @@ h1 {
 }
 
 .admin {
-    margin-left: 10px;
-    padding: 2px 15px;
+    font-size: 12px;
+    margin-left: 5px;
+    padding: 2px 10px;
     border-radius: 20px;
     background-color: #fcf1a5;
     display: inline-block;
 }
 
 .cell-hd {
-    width: 50px;
-    text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 .cell-hd-pic {
+    display: inline-block;
     width: 50px;
     height: 50px;
     border-radius: 25px;
-    line-height: 50px;
-}
-
-.ot-cells {
-    margin-top: 30px;
-}
-
-.ot-cell {
-    display: flex;
-    min-height: 60px;
-}
-
-.cell-bd {
-    margin-left: 15px;
-    flex-grow: 1;
-    p {
-        margin: 5px 0;
-    }
-}
-
-.cell-hd-name {
-    font-size: $fontSizeLevel6;
-}
-
-.team-pic_no {
-    width: 80px;
-}
-
-@media screen and (max-width: 1024px) {
-    .team-sub {
-        flex-direction: column;
-        .btn {
-            padding: 0 10px;
-        }
-    }
-    .team-sub_btn {
-        margin-top: 10px;
-    }
+    line-height: 100%;
 }
 
 </style>

@@ -2,15 +2,15 @@
     <div>
         <el-input v-model.trim="form.eMail" placeholder="登录邮箱"></el-input>
         <el-input v-model.trim="form.nickName" placeholder="用户昵称"></el-input>
-        <el-input v-model.trim="form.userPassword" placeholder="6-12位字母数字密码"></el-input>
-        <el-input v-model.trim="form.confirmPassword" placeholder="密码确认"></el-input>
+        <el-input v-model.trim="form.userPassword" placeholder="6-12位字母数字密码" type="password"></el-input>
+        <el-input v-model.trim="form.confirmPassword" placeholder="密码确认" type="password"></el-input>
         <div v-if="teamShow">
             <div class="mt10">
                 <el-radio class="radio" v-model="teamPick" label="create">创建团队</el-radio>
                 <el-radio class="radio" v-model="teamPick" label="join">加入团队</el-radio>
             </div>
-            <el-input v-if="teamStatus" v-model.trim="form.teamName" class="register-input" placeholder="团队名称"></el-input>
-            <el-input v-else v-model.trim="form.teamId" placeholder="团队邀请码"></el-input>
+            <el-input v-if="teamStatus" v-model.trim="teamName" class="register-input" placeholder="团队名称"></el-input>
+            <el-input v-else v-model.trim="teamId" placeholder="团队邀请码"></el-input>
         </div>
         <el-button type="primary" @click="submitRegsiter" class="register-btn">注册</el-button>
         <p>已经注册过了？
@@ -24,7 +24,7 @@ import {
 } from 'element-ui'
 import {
     register
-} from '@/store/home'
+} from '@/store/user'
 import {
     testEmail,
     testPwd,
@@ -40,11 +40,10 @@ export default {
                 eMail: '',
                 nickName: '',
                 userPassword: '',
-                confirmPassword: '',
-                teamName: '',
-                teamId: ''
+                confirmPassword: ''
             },
-            photo: require('../image/cat.png')
+            teamName: '',
+            teamId: ''
         }
     },
     computed: {
@@ -66,25 +65,27 @@ export default {
             }
         },
         submitRegsiter() {
+            if (this.teamStatus) {
+                this.form.teamName = this.teamName
+            } else {
+                this.form.teamId = this.teamId
+            }
             if (!this.check(this.form)) {
                 return
             }
-            this.form.photo = this.photo
-            register(this.form, (res) => {
-                if (res.success) {
-                    localStorage.setItem('token', res.token)
-                    console.log(res.token)
-                    let timer = setTimeout(() => {
-                        if (localStorage.getItem('token') === res.token) {
-                            clearTimeout(timer)
-                            this.$router.replace({
-                                name: 'home'
-                            })
-                        }
-                    }, 10)
-                } else {
-                    alert(res.resultDes)
-                }
+            // this.form.photo = this.photo
+            register(this.form).then((res) => {
+                localStorage.setItem('token', res.token)
+                let timer = setTimeout(() => {
+                    if (localStorage.getItem('token') === res.token) {
+                        clearTimeout(timer)
+                        this.$router.replace({
+                            name: 'home'
+                        })
+                    }
+                }, 10)
+            }).catch(error => {
+                alert(error.error)
             })
         },
         goLogin() {

@@ -1,39 +1,33 @@
 <template>
     <div v-if="!loading">
+        <date-el v-on:dateBack="changeList"></date-el>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="个人周报" name="weekly"></el-tab-pane>
             <el-tab-pane label="小组总结" name="summary"></el-tab-pane>
         </el-tabs>
-        <date-el v-on:dateBack="changeList"></date-el>
         <div class="list-write">
             <a href="javsscript:;" @click="goWeeklyConfig" v-if="isAdmin">设置</a>
             <el-button @click="creatWeekly" v-if="write">{{activeName == 'summary' ? '写总结' : '写周报'}}</el-button>
         </div>
-        <el-row :gutter="20" v-for="item in list" :key="item._id" class="list">
-            <el-col :span="4" class="list-hd">
-                <img class="list-hd-pic" :src="item.phote | photoFilter" alt="">
-                <p>{{item.userId.nickName}}</p>
-            </el-col>
-            <el-col :span="16" class="list-content">
-                <vue-markdown v-highlight :source="item.content" class="list-bd"></vue-markdown>
-            </el-col>
-        </el-row>
+        <div class="list-list">
+            <report-entry v-for="item in list" :reportData="item | reportFilter" :key="item.id"></report-entry>
+        </div>
     </div>
 </template>
 <script>
 import {
+    getReportList
+} from '@/store/report'
+import {
     Tabs,
     TabPane
 } from 'element-ui'
-import {
-    getWeekList
-} from '@/store/weekly'
 import dateFormate from './common/index'
 import dateEl from './common/date'
-import VueMarkdown from 'vue-markdown'
+import reportEntry from 'module/components/report/entry'
 
 export default {
-    name: 'weeklyList',
+    name: 'reportList',
     data() {
         return {
             activeName: 'weekly',
@@ -50,13 +44,18 @@ export default {
     },
     components: {
         dateEl,
-        VueMarkdown,
+        reportEntry,
         'el-tabs': Tabs,
         'el-tab-pane': TabPane
     },
     filters: {
-        photoFilter(val) {
-            return val || require('../user/image/cat.png')
+        reportFilter(item) {
+            return {
+                head: item.phote,
+                name: item.userId.nickName,
+                date: dateFormate.format(item.createTime),
+                content: item.content
+            }
         }
     },
     watch: {
@@ -80,26 +79,20 @@ export default {
     },
     methods: {
         initData() {
-            getWeekList({
-                tarUserId: this.tarUserId,
+            getReportList({
                 beginDate: this.beginDate,
                 type: this.activeName
             }).then((res) => {
-                if (res.success) {
-                    this.isAdmin = res.result.isAdmin
-                    this.list = res.result.list
-                } else {
-                    this.$router.replace({
-                        name: 'refuse'
-                    })
-                }
+                this.isAdmin = res.isAdmin
+                this.list = res.list
                 this.loading = false
+            }).catch(error => {
+                console.log(error.error)
             })
-            console.log(this.write)
         },
         creatWeekly() {
             this.$router.push({
-                name: 'weeklyDetail',
+                name: 'reportDetail',
                 query: {
                     beginDate: Date.parse(this.beginDate),
                     type: this.activeName
@@ -108,7 +101,7 @@ export default {
         },
         changeList(val) {
             this.$router.push({
-                name: 'weeklyList',
+                name: 'reportList',
                 query: {
                     beginDate: val,
                     id: this.tarUserId
@@ -117,7 +110,7 @@ export default {
         },
         goWeeklyConfig() {
             this.$router.push({
-                name: 'weeklyConfig',
+                name: 'reportConfig',
                 query: {
                     type: this.activeName
                 }
@@ -171,7 +164,7 @@ export default {
 .list-write {
     position: absolute;
     right: 10px;
-    top: 80px;
+    top: 50px;
 }
 
 </style>

@@ -21,11 +21,7 @@
                         </p>
                     </template>
                     <div class="area_edit">
-                        <el-input
-                            class="edit_input disb"
-                            v-model="userEdit.name"
-                            placeholder="用户名"
-                            prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.name" placeholder="用户名" prefix-icon="el-icon-star-off">
                         </el-input>
                         <el-button class="disb" type="info" @click="saveInfo('name')">确定</el-button>
                     </div>
@@ -40,26 +36,14 @@
                     </template>
                     <div class="area_edit">
                         <p>
-                            <el-input
-                                class="edit_input"
-                                v-model="userEdit.emailPwd"
-                                placeholder="验证码"
-                                prefix-icon="el-icon-star-off">
+                            <el-input class="edit_input" v-model="userEdit.emailPwd" placeholder="验证码" prefix-icon="el-icon-star-off">
                             </el-input>
                             <span>发送验证码</span>
                         </p>
-                        <el-input
-                            class="edit_input disb"
-                            v-model="userEdit.emailNew"
-                            placeholder="新邮箱"
-                            prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.emailNew" placeholder="新邮箱" prefix-icon="el-icon-star-off">
                         </el-input>
                         <p>
-                            <el-input
-                                class="edit_input"
-                                v-model="userEdit.emailPwdNew"
-                                placeholder="新邮箱验证码"
-                                prefix-icon="el-icon-star-off">
+                            <el-input class="edit_input" v-model="userEdit.emailPwdNew" placeholder="新邮箱验证码" prefix-icon="el-icon-star-off">
                             </el-input>
                             <span>发送验证码</span>
                         </p>
@@ -75,11 +59,7 @@
                         </p>
                     </template>
                     <div class="area_edit">
-                        <el-input
-                            class="edit_input disb"
-                            v-model="userEdit.phone"
-                            placeholder="新手机号"
-                            prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.phone" placeholder="新手机号" prefix-icon="el-icon-star-off">
                         </el-input>
                         <el-button class="disb" type="info" @click="saveInfo('phone')">确定</el-button>
                     </div>
@@ -93,23 +73,11 @@
                         </p>
                     </template>
                     <div class="area_edit">
-                        <el-input
-                            class="edit_input disb"
-                            v-model="userEdit.password"
-                            placeholder="老密码"
-                            prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.password" placeholder="老密码" prefix-icon="el-icon-star-off">
                         </el-input>
-                        <el-input
-                            class="edit_input disb"
-                            v-model="userEdit.passwordNew"
-                            placeholder="新密码"
-                            prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.passwordNew" placeholder="新密码" prefix-icon="el-icon-star-off">
                         </el-input>
-                        <el-input
-                            class="edit_input disb"
-                            v-model="userEdit.passwordNewConfirm"
-                            placeholder="新密码确认"
-                            prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.passwordNewConfirm" placeholder="新密码确认" prefix-icon="el-icon-star-off">
                         </el-input>
                         <el-button class="disb" type="info" @click="saveInfo('password')">确定</el-button>
                     </div>
@@ -120,10 +88,10 @@
 </template>
 <script>
 import {
-    signout,
+    signOut,
     getUsrInfo,
     updateUserInfo
-} from '@/store/home'
+} from '@/store/user'
 import {
     Collapse,
     CollapseItem
@@ -194,7 +162,7 @@ export default {
          * sign out team
          */
         submitSignout() {
-            signout((res) => {
+            signOut((res) => {
                 if (res.success) {
                     this.$router.replace({
                         name: 'login'
@@ -304,6 +272,7 @@ export default {
         display: block;
     }
 }
+
 .link-delete {
     display: block;
     position: absolute;

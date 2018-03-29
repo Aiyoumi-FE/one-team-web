@@ -13,7 +13,7 @@
 </template>
 <script>
 import {
-    teamOpera
+    addMembers
 } from '@/store/team'
 export default {
     name: 'home',
@@ -46,7 +46,7 @@ export default {
             } else if (this.opera === 'join') {
                 form.teamId = this.field
             }
-            teamOpera(form, (res) => {
+            addMembers(form, (res) => {
                 if (res.success) {
                     this.$router.replace({
                         name: 'home'

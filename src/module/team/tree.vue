@@ -165,13 +165,13 @@ import {
 } from 'element-ui'
 import {
     getPermissionTeamList,
-    getTeamInfo,
+    getMembers,
     createTeam,
     updateTeam,
     deleteTeam,
     addMem2Team,
     sendEmail,
-    changeTeamMemStatus
+    updateMembers
 } from '@/store/team'
 export default {
     name: 'teamManage',
@@ -295,7 +295,7 @@ export default {
             this.curAdminId = team.administrator
             this.operatTeamId = team._id
 
-            getTeamInfo({
+            getMembers({
                 teamId
             }).then((data) => {
                 if (data.success && data.result) {
@@ -314,7 +314,7 @@ export default {
         },
         memOperate(str, row) {
             console.log(str, row)
-            changeTeamMemStatus({
+            updateMembers({
                 opera: str,
                 userId: row._id,
                 teamId: this.operatTeamId
