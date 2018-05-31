@@ -1,17 +1,21 @@
 <template>
-    <div class="mid">
-        <h3>您还未加入任何团队</h3>
-        <p class="btn btn-choose">
-            <span class="btn-create" :class="{'on' : opera == 'create'}" @click="operation('create')">创建团队</span>
-            <span :class="{'on' : opera == 'join'}" @click="operation('join')">加入团队</span>
-        </p>
-        <div v-show="opera" class="team-opera">
-            <input type="text" class="input" ref="field" :placeholder="placeholder" v-model.trim="field">
-            <p @click="submit">下一步</p>
-        </div>
+    <div class="refuse-page">
+        <el-alert
+            title="您还未加入任何团队"
+            type="warning">
+        </el-alert>
+        <el-tabs v-model="activeName" class="refuse-content">
+            <el-tab-pane label="创建团队" name="teamName"><el-input v-model="teamName" placeholder="请输入团队名称"></el-input></el-tab-pane>
+            <el-tab-pane label="加入团队" name="teamId"><el-input v-model="teamId" placeholder="请输入邀请码"></el-input></el-tab-pane>
+        </el-tabs>
+        <el-button type="primary" @click="submit">下一步</el-button>
     </div>
 </template>
 <script>
+import {
+    Tabs,
+    TabPane
+} from 'element-ui'
 import {
     addMembers
 } from '@/store/team'
@@ -19,8 +23,9 @@ export default {
     name: 'home',
     data() {
         return {
-            opera: '',
-            field: ''
+            activeName: 'teamName',
+            teamName: '',
+            teamId: ''
         }
     },
     computed: {
@@ -28,32 +33,29 @@ export default {
             return this.opera === 'create' ? '请输入团队名称' : '请输入团队邀请码'
         }
     },
+    components: {
+        'el-tabs': Tabs,
+        'el-tab-pane': TabPane
+    },
     mounted() {},
     methods: {
-        operation(str) {
-            this.opera = str
-            this.$nextTick(() => {
-                this.$refs.field.focus()
-            })
-        },
         submit() {
-            if (!this.field) {
+            if (!this[this.activeName]) {
+                let msg = {
+                    teamName: '请输入团队名称',
+                    teamId: '请输入团队邀请码'
+                }[this.activeName]
+                this.$message.error(msg)
                 return
             }
             let form = {}
-            if (this.opera === 'create') {
-                form.teamName = this.field
-            } else if (this.opera === 'join') {
-                form.teamId = this.field
-            }
-            addMembers(form, (res) => {
-                if (res.success) {
-                    this.$router.replace({
-                        name: 'home'
-                    })
-                } else {
-                    alert(res.resultDes)
-                }
+            form[this.activeName] = this[this.activeName]
+            addMembers(form).then((res) => {
+                this.$router.replace({
+                    name: 'home'
+                })
+            }).catch(error => {
+                this.$message.error(error)
             })
         }
     }
@@ -61,49 +63,7 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-// @import '../../var.scss';
-.mid {
-    text-align: center;
+.refuse-content {
+    margin-bottom: 20px;
 }
-
-.team-pic_no {
-    width: 80px;
-}
-
-.btn-choose {
-    margin: 20px auto;
-    padding: 0;
-    width: 150px;
-    background-color: #fff;
-    color: #222;
-    border: 1px solid #999;
-    display: flex;
-    span {
-        width: 50%;
-        display: inline-block;
-        text-align: center;
-    }
-}
-
-.btn-create::after {
-    content: " ";
-    display: inline-block;
-    position: absolute;
-    left: 50%;
-    width: 1px;
-    height: 35px;
-    background-color: #999;
-}
-
-.on {
-    background-color: #222;
-    color: #fff;
-}
-
-.team-pic_next {
-    position: absolute;
-    width: 30px;
-    margin-left: 20px;
-}
-
 </style>

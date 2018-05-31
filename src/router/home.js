@@ -3,6 +3,9 @@ const refuse = () => import(/* webpackChunkName: 'refuse' */ '../module/common/r
 const App = () => import(/* webpackChunkName: 'index' */ '../module/index')
 
 export default [{
+    path: '/',
+    redirect: '/page/home'
+}, {
     path: '/page',
     component: App,
     children: [{

@@ -5,7 +5,7 @@ import {
     _deletePromise
 } from '../assets/js/ajax'
 
-/* ================登陆================= */
+/* ================团队================= */
 export const getMembers = () => {
     return _getPromise('/api/v1/team/members')
 }

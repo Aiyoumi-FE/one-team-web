@@ -18,16 +18,3 @@ export const getUsrInfo = (param) => { return _getPromise('/api/v1/user', param)
 export const updateUserInfo = (param) => { return _patchPromise('/api/v1/user', param) }
 // 注销
 export const deleteUser = (param) => { return _deletePromise('/api/v1/user', param) }
-/* 获取用户信息 */
-// export const getUsrInfo = (params, callback) => {
-//     return _postPromise('/user/getUsrInfo', params, (data) => {
-//         callback(data)
-//     })
-// }
-
-/* 个人设置--更新信息 */
-// export const updateUserInfo = (params, callback) => {
-//     return _postPromise('/user/updateUserInfo', params, (data) => {
-//         callback(data)
-//     })
-// }

@@ -29,7 +29,9 @@ export default {
     },
     methods: {
         submitLogin() {
-            if (!this.check(this.form)) {
+            let checkRes = this.check(this.form)
+            if (checkRes) {
+                this.$message.error(checkRes)
                 return
             }
             signIn(this.form).then((res) => {
@@ -42,7 +44,7 @@ export default {
                     })
                 }
             }).catch(error => {
-                console.log(error.error)
+                this.$message.error(error.error)
             })
         },
         goRegsiter() {
@@ -52,14 +54,11 @@ export default {
         },
         check(form) {
             if (!testEmail(form.eMail)) {
-                form.eMail ? alert('邮箱格式错误') : alert('请输入用户名')
-                return
+                return form.eMail ? '邮箱格式错误' : '请输入用户名'
             }
             if (!testPwd(form.userPassword)) {
-                form.userPassword ? alert('密码格式错误') : alert('请输入密码')
-                return
+                return form.userPassword ? '密码格式错误' : '请输入密码'
             }
-            return true
         }
     }
 }

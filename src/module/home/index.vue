@@ -54,6 +54,7 @@ export default {
     height: 100%;
     background-color: #fff;
 }
+
 .hello {
     z-index: 1;
     min-height: 250px;

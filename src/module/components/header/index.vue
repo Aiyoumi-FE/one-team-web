@@ -64,14 +64,18 @@ export default {
         },
         submitSignout() {
             signOut().then((res) => {
-                localStorage.removeItem('token')
-                cookie.clear('team', '/')
-                cookie.clear('name', '/')
-                this.$router.replace({
-                    name: 'login'
-                })
+                this.clean()
             }).catch(error => {
                 console.log(error.error)
+                this.clean()
+            })
+        },
+        clean() {
+            localStorage.removeItem('token')
+            cookie.clear('team', '/')
+            cookie.clear('name', '/')
+            this.$router.replace({
+                name: 'login'
             })
         }
     }

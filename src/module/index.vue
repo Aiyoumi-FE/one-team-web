@@ -32,7 +32,7 @@ body {
     min-height: 800px;
     max-width: 960px;
     background: #fff;
-    padding: 10px;
+    padding: 20px;
 }
 
 </style>

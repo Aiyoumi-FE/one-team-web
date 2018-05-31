@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!loading">
+    <div>
         <date-el v-on:dateBack="changeList"></date-el>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="个人周报" name="weekly"></el-tab-pane>

@@ -1,15 +1,17 @@
 import axios from 'axios'
+// import router from '../../router'
 
 const formatRes = (res) => {
     if (res.success) {
         return Promise.resolve(res.result)
     }
     let url = window.location.href
-    if (res.code === -1999) {
-        this.$router.push({
-            name: 'login',
-            query: { url }
-        })
+    if (res.code === '-1999') {
+        // router.replace({
+        //     name: 'login',
+        //     query: { url }
+        // })
+        window.location.replace('/page/user/login?url=' + encodeURIComponent(url))
         return false
     }
     return Promise.reject(res)
@@ -21,7 +23,6 @@ axios.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
     return config
 }, (error) => {
-    console.log('request-error:', error)
     return Promise.reject(error)
 })
 

@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <img :src="logo" alt="" class="logo">
-        <h1>ONE TEAM</h1>
+        <h1>One Team</h1>
         <div class="login-content">
             <router-view></router-view>
         </div>

@@ -1,85 +1,78 @@
 <template>
-    <div class="page_setting">
+    <div>
         <h2>个人设置</h2>
-        <a href="javascript:;" class="link-delete" @click="submitSignout">退出团队</a>
         <div class="setting-cells">
             <div class="part_photo">
                 <label class="label-img" for="file">
-                    <div class="setting-img"><img src="../image/cat.png" alt=""></div>
+                    <div class="setting-img">
+                        <img :src="user.headPortrait || headPic" alt="">
+                    </div>
                     <p class="txt_photo__title">选择新头像</p>
                     <p class="txt_photo__subtitle">可以选择png/jpg图片作为头像</p>
                     <input class="input-file" type="file" name="file" id="file" @change="upImg($event)" enctype="multipart/form-data">
                 </label>
             </div>
-            <el-collapse accordion>
-                <el-collapse-item>
+            <el-collapse accordion :value="openItem">
+                <el-collapse-item name="nickName">
                     <template slot="title">
-                        <p class="setting-item" @click="setEditFlag('name')">
+                        <div class="setting-item" @click="setEditFlag('nickName')">
                             <label class="setting-item__label">用&nbsp;户&nbsp;名</label>
-                            <span>{{user.name | contentFilter(editflag !== 'name', '用户名')}}</span>
-                            <a href="javascript:;" class="btn_edit">{{btnTxt | editBtnFilter(editflag !== 'name') }}</a>
-                        </p>
+                            <p class="setting-item__value">{{user.nickName | contentFilter(editflag !== 'name', '用户名')}}</p>
+                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'name') }}</a>
+                        </div>
                     </template>
                     <div class="area_edit">
-                        <el-input class="edit_input disb" v-model="userEdit.name" placeholder="用户名" prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.nickName" placeholder="用户名">
                         </el-input>
-                        <el-button class="disb" type="info" @click="saveInfo('name')">确定</el-button>
+                        <el-button type="primary" @click="updateInfo('nickName')" plain size="small">确定</el-button>
                     </div>
                 </el-collapse-item>
-                <el-collapse-item>
+                <el-collapse-item name="eMail">
                     <template slot="title">
-                        <p class="setting-item" @click="setEditFlag('email')">
+                        <div class="setting-item" @click="setEditFlag('email')">
                             <label class="setting-item__label">邮&nbsp;&nbsp;&nbsp;箱</label>
-                            <span>{{user.email | contentFilter(editflag !== 'email', '邮箱')}}</span>
-                            <a href="javascript:;" class="btn_edit">{{btnTxt | editBtnFilter(editflag !== 'email') }}</a>
-                        </p>
+                            <p class="setting-item__value">{{user.eMail | contentFilter(editflag !== 'email', '邮箱')}}</p>
+                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'email') }}</a>
+                        </div>
                     </template>
                     <div class="area_edit">
-                        <p>
-                            <el-input class="edit_input" v-model="userEdit.emailPwd" placeholder="验证码" prefix-icon="el-icon-star-off">
-                            </el-input>
-                            <span>发送验证码</span>
-                        </p>
-                        <el-input class="edit_input disb" v-model="userEdit.emailNew" placeholder="新邮箱" prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.emailPwd" placeholder="密码验证" type="password">
                         </el-input>
-                        <p>
-                            <el-input class="edit_input" v-model="userEdit.emailPwdNew" placeholder="新邮箱验证码" prefix-icon="el-icon-star-off">
-                            </el-input>
-                            <span>发送验证码</span>
-                        </p>
-                        <el-button class="disb" type="info" @click="saveInfo('email')">确定</el-button>
+                        <el-input class="edit_input disb" v-model="userEdit.emailPwdNew" placeholder="新邮箱验证码">
+                        </el-input>
+                        <el-button type="primary" @click="sendEmail('eMail')" plain size="small">发送验证邮件</el-button>
                     </div>
                 </el-collapse-item>
-                <el-collapse-item>
+                <el-collapse-item name="phoneNumber">
                     <template slot="title">
-                        <p class="setting-item" @click="setEditFlag('phone')">
+                        <div class="setting-item" @click="setEditFlag('phoneNumber')">
                             <label class="setting-item__label">手&nbsp;&nbsp;&nbsp;机</label>
-                            <span>{{user.phone | contentFilter(editflag !== 'phone', '手机号')}}</span>
-                            <a href="javascript:;" class="btn_edit">{{btnTxt | editBtnFilter(editflag !== 'phone') }}</a>
-                        </p>
+                            <p class="setting-item__value">{{user.phoneNumber | contentFilter(editflag !== 'phone', '手机号')}}</p>
+                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'phone') }}</a>
+                        </div>
                     </template>
                     <div class="area_edit">
-                        <el-input class="edit_input disb" v-model="userEdit.phone" placeholder="新手机号" prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.phoneNumber" placeholder="新手机号">
                         </el-input>
-                        <el-button class="disb" type="info" @click="saveInfo('phone')">确定</el-button>
+                        <el-button type="primary" @click="updateInfo('phoneNumber')" plain size="small">确定</el-button>
                     </div>
                 </el-collapse-item>
-                <el-collapse-item>
+                <el-collapse-item name="userPassword">
                     <template slot="title">
-                        <p class="setting-item" @click="setEditFlag('password')">
+                        <div class="setting-item" @click="setEditFlag('password')">
                             <label class="setting-item__label">密&nbsp;&nbsp;&nbsp;码</label>
-                            <span>重置密码</span>
-                            <a href="javascript:;" class="btn_edit">{{btnTxt | editBtnFilter(editflag !== 'password') }}</a>
-                        </p>
+                            <p class="setting-item__value">重置密码</p>
+                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'password') }}</a>
+                        </div>
                     </template>
                     <div class="area_edit">
-                        <el-input class="edit_input disb" v-model="userEdit.password" placeholder="老密码" prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.password" placeholder="老密码">
                         </el-input>
-                        <el-input class="edit_input disb" v-model="userEdit.passwordNew" placeholder="新密码" prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.passwordNew" placeholder="新密码">
                         </el-input>
-                        <el-input class="edit_input disb" v-model="userEdit.passwordNewConfirm" placeholder="新密码确认" prefix-icon="el-icon-star-off">
+                        <el-input class="edit_input disb" v-model="userEdit.passwordNewConfirm" placeholder="新密码确认">
                         </el-input>
-                        <el-button class="disb" type="info" @click="saveInfo('password')">确定</el-button>
+                        <el-button type="primary" @click="updateInfo('password')" plain size="small">确定</el-button>
                     </div>
                 </el-collapse-item>
             </el-collapse>
@@ -88,7 +81,6 @@
 </template>
 <script>
 import {
-    signOut,
     getUsrInfo,
     updateUserInfo
 } from '@/store/user'
@@ -101,30 +93,26 @@ export default {
     data() {
         return {
             editflag: '',
+            openItem: 'nickName',
             user: {
-                name: '李天霸',
-                email: 'tianba@ico.com',
-                phone: '15268175233',
-                avator: ''
+                headPortrait: '',
+                nickName: '',
+                eMail: '',
+                phoneNumber: ''
             },
             userEdit: {
-                uid: '',
-                name: '',
+                nickName: '',
                 email: '',
                 emailPwd: '',
                 emailNew: '',
                 emailPwdNew: '',
-                phone: '',
+                phoneNumber: '',
                 password: '',
                 passwordNew: '',
                 passwordNewConfirm: ''
             },
-            btnTxt: '编辑'
-        }
-    },
-    computed: {
-        userID() {
-            return window.localStorage.getItem('uid')
+            btnTxt: '编辑',
+            headPic: require('../image/cat.png')
         }
     },
     filters: {
@@ -140,36 +128,17 @@ export default {
         'el-collapse-item': CollapseItem
     },
     created() {
-        if (this.userID) {
-            this.initInfo()
-        }
+        this.initInfo()
     },
     methods: {
         /**
          * initialize user info
          */
         initInfo() {
-            // let userId = this.userID
             getUsrInfo().then((res) => {
-                if (res.success) {
-
-                } else {
-
-                }
-            })
-        },
-        /**
-         * sign out team
-         */
-        submitSignout() {
-            signOut((res) => {
-                if (res.success) {
-                    this.$router.replace({
-                        name: 'login'
-                    })
-                } else {
-                    alert(res.resultDes)
-                }
+                Object.assign(this.user, res)
+            }).catch(error => {
+                console.log(error.error)
             })
         },
         /**
@@ -222,55 +191,63 @@ export default {
          * @param      {<type>}  item    The item
          */
         updateInfo(item) {
-            this.userEdit.uid = this.selfUserID
-            updateUserInfo().then((res) => {
-
+            let formData = Object.assign({}, {
+                [item]: this.userEdit[item]
             })
+            updateUserInfo(formData).then((res) => {
+                this.user[item] = formData[item]
+                this.openItem = ''
+            }).catch(error => {
+                console.log(error.error)
+            })
+        },
+
+        sendEmail() {
+            console.log('send')
         }
     }
 }
 
 </script>
 <style lang='scss' scoped>
-.page_setting {
-    padding: 35px;
-    .setting-cells {
-        padding: 0 10px;
-    }
-    .setting-item {
-        /*display: flex;
-        justify-content: space-between;
-        align-items: center;*/
-    }
-    .setting-item__label {
-        /*flex-basis: 15%;*/
-        display: inline-block;
-        width: 30%;
-    }
-    .area_edit {
-        padding-left: 30%;
-    }
-    .btn_edit {
-        float: right;
-    }
-    .setting-item__filed {
-        padding-left: 10px;
-        display: inline-block;
-    }
-    .edit_input {
-        max-width: 200px;
-        margin-bottom: 5px
-    }
-    /*.area_edit {
-        display: flex;
-        justify-content: space-between;
-    }*/
-    .fr {
-        float: right;
-    }
-    .disb {
-        display: block;
-    }
+.setting-cells {
+    padding: 0 10px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.setting-item__label {
+    width: 30%;
+}
+
+.setting-item__value {
+    flex: 1;
+}
+
+.area_edit {
+    padding-left: 29%;
+}
+
+.setting-item__filed {
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.edit_input {
+    max-width: 200px;
+    margin-bottom: 5px
+}
+
+.fr {
+    float: right;
+}
+
+.disb {
+    display: block;
 }
 
 .link-delete {
@@ -337,6 +314,15 @@ h2 {
         float: left;
         overflow: hidden;
     }
+}
+
+/deep/ .el-collapse-item__header,
+/deep/ .el-collapse-item__wrap {
+    background-color: transparent;
+}
+
+.is-active {
+    background-color: #fcfcfc;
 }
 
 </style>
