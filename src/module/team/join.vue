@@ -25,7 +25,7 @@
 import {
     joinUrl,
     sendEmail
-} from '@/store/team'
+} from '@/api/team'
 // import VueQArt from 'vue-qart'
 export default {
     name: 'home',

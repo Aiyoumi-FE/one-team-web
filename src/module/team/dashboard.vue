@@ -85,10 +85,10 @@ import {
     // getTeamInfo,
     getChildTeamInfo,
     getTeamList
-} from '@/store/team'
+} from '@/api/team'
 import {
     getRecordList
-} from '@/store/subscript'
+} from '@/api/subscript'
 export default {
     name: 'dashboard',
     data() {

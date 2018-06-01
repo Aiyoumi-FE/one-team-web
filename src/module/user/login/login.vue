@@ -12,7 +12,7 @@
 <script>
 import {
     signIn
-} from '@/store/user'
+} from '@/api/user'
 import {
     testEmail,
     testPwd

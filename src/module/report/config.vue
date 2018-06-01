@@ -20,7 +20,7 @@
 import {
     getReportConfig,
     saveReportTemplate
-} from '@/store/report'
+} from '@/api/report'
 import {
     Tabs,
     TabPane

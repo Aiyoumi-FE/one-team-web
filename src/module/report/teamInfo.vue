@@ -53,10 +53,10 @@
 import {
     getReportList,
     getReportDetail
-} from '@/store/report'
+} from '@/api/report'
 import {
     getMembers
-} from '@/store/team'
+} from '@/api/team'
 import dateFormate from './common/index'
 import VueMarkdown from 'vue-markdown'
 

@@ -24,7 +24,7 @@
 <script>
 import {
     signOut
-} from '@/store/user'
+} from '@/api/user'
 import {
     Menu,
     Submenu,

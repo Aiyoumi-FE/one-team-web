@@ -24,7 +24,7 @@ import {
 } from 'element-ui'
 import {
     register
-} from '@/store/user'
+} from '@/api/user'
 import {
     testEmail,
     testPwd,

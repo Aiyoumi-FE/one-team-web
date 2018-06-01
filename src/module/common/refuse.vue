@@ -18,7 +18,7 @@ import {
 } from 'element-ui'
 import {
     addMembers
-} from '@/store/team'
+} from '@/api/team'
 export default {
     name: 'home',
     data() {

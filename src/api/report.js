@@ -1,7 +1,7 @@
 import {
     _getPromise,
     _postPromise
-} from '../assets/js/ajax'
+} from './base'
 
 /* ================Report================= */
 export const getReportList = (param) => {

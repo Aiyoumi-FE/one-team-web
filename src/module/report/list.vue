@@ -17,7 +17,7 @@
 <script>
 import {
     getReportList
-} from '@/store/report'
+} from '@/api/report'
 import {
     Tabs,
     TabPane

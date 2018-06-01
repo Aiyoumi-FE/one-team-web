@@ -25,7 +25,7 @@ import dateEl from './common/date'
 import {
     getReportDetail,
     saveReportDetail
-} from '@/store/report'
+} from '@/api/report'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import reportEntry from 'module/components/report/entry'
 export default {

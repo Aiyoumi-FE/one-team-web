@@ -1,6 +1,6 @@
 import {
     _postPromise
-} from '../assets/js/ajax'
+} from './base'
 
 export const getRecordList = (param) => {
     return _postPromise('/api/subscript/getRecordList', param)

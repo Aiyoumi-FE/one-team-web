@@ -56,7 +56,7 @@ import {
     addRecord,
     getRecordList,
     getUserByName
-} from '@/store/subscript'
+} from '@/api/subscript'
 export default {
     name: 'focusList',
     data() {

@@ -4,7 +4,7 @@ import {
     // _putPromise,
     _patchPromise,
     _deletePromise
-} from '../assets/js/ajax'
+} from './base'
 
 // 登入
 export const signIn = (param) => { return _postPromise('/api/v1/application', param) }

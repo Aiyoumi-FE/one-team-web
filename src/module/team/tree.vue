@@ -172,7 +172,7 @@ import {
     addMem2Team,
     sendEmail,
     updateMembers
-} from '@/store/team'
+} from '@/api/team'
 export default {
     name: 'teamManage',
     data() {

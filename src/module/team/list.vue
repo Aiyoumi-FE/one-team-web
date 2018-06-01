@@ -42,7 +42,7 @@ import {
 import {
     getMembers,
     updateMembers
-} from '@/store/team'
+} from '@/api/team'
 import refuse from '@/module/common/refuse'
 
 export default {

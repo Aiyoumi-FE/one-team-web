@@ -30,7 +30,7 @@
 <script>
 import {
     getReportDetail
-} from '@/store/report'
+} from '@/api/report'
 import dateFormate from '../../../report/common/index'
 import VueMarkdown from 'vue-markdown'
 import reportUnit from '@/module/components/reportunit/index'

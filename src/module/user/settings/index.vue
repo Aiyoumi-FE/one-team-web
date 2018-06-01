@@ -83,7 +83,7 @@
 import {
     getUsrInfo,
     updateUserInfo
-} from '@/store/user'
+} from '@/api/user'
 import {
     Collapse,
     CollapseItem

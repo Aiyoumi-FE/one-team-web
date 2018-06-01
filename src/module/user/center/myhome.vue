@@ -5,9 +5,9 @@
                 <img :src="photoSrc" alt="">
             </div>
             <div class="part_info">
-                <p class="user_name">{{userName}}</p>
+                <p class="user_name">{{userInfo.nickName}}</p>
                 <p>{{userLink}}</p>
-                <p>{{userDesc}}</p>
+                <p>{{userInfo.desc}}</p>
             </div>
         </div>
         <div class="area_menu">
@@ -15,7 +15,7 @@
                 <el-tab-pane label="周报" name="report">
                     <report-list :userId="userId"></report-list>
                 </el-tab-pane>
-                <el-tab-pane label="关注" name="focus">
+                <el-tab-pane label="关注" name="focus" >
                     <focus-list :focusList="focusList"></focus-list>
                 </el-tab-pane>
             </el-tabs>
@@ -27,10 +27,10 @@ import reportList from './common/reportlist'
 import focusList from './common/focuslist'
 // import {
 //     getUsrInfo
-// } from '@/store/home'
+// } from '@/api/home'
 import {
     getRecordList
-} from '@/store/subscript'
+} from '@/api/subscript'
 import {
     Tabs,
     TabPane
@@ -40,10 +40,9 @@ export default {
     data() {
         return {
             photoSrc: require('../image/leader.png'),
-            userName: 'Heioray',
-            userEmail: 'heioray@sina.com',
-            userPhone: '15268175233',
-            userDesc: 'The Rap God',
+            userInfo: {
+
+            },
             menuList: [{
                 label: '周报',
                 param: 'report'
@@ -59,15 +58,18 @@ export default {
         }
     },
     computed: {
+        targetUid() {
+            return this.$route.query.id
+        },
         userLink() {
-            if (this.userEmail && this.userPhone) {
-                return this.userPhone + '/' + this.userEmail
+            if (this.userInfo.eMail && this.userInfo.phone) {
+                return this.userInfo.eMail + '/' + this.userInfo.phone
             } else {
-                return this.userEmail || this.userPhone
+                return this.userInfo.eMail || this.userInfo.phone
             }
         },
-        uid() {
-            return localStorage.getItem('uid') || '111'
+        currentUid() {
+            return localStorage.getItem('uid') || ''
         }
     },
     components: {
@@ -83,7 +85,7 @@ export default {
     methods: {
         initUserInfo() {
             // getUsrInfo().then((res) => {
-
+            //     Object.assign(this.userInfo, res.result)
             // })
         },
         getFocusList() {

@@ -3,7 +3,7 @@ import {
     _postPromise,
     _putPromise,
     _deletePromise
-} from '../assets/js/ajax'
+} from './base'
 
 /* ================团队================= */
 export const getMembers = () => {
