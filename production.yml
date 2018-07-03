@@ -1,0 +1,15 @@
+# create a docker-compose.yml file
+version: "3"
+services:
+  web:
+    container_name: one-nginx
+    build:
+      context: .
+      dockerfile: ./deploy
+    links:
+      - static:static
+  static:
+    container_name: one-web
+    build: .
+    command: npm run build
+
