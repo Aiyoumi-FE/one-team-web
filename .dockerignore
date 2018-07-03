@@ -1,7 +1,6 @@
 Dockerfile
 .dockerignore
 Makefile
-build
 .DS_Store
 .travis.yml
 node_modules

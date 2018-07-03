@@ -6,9 +6,11 @@ services:
     ports:
       - "8006:3000"
     environment:
+      - HOST=0.0.0.0
       - PORT=3000
-    volumes:
-      - .:/app
+      - TARGET=http://192.168.4.28:8081
+    #volumes:
+    #  - .:/app
       #- ./package.json:/app/package.json:z
       #- ./src:/app/src
       #- ./config:/app/config
