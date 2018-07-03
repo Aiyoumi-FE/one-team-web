@@ -2,15 +2,14 @@
     <div>
         <h2>个人设置</h2>
         <div class="setting-cells">
-            <div class="part_photo">
-                <label class="label-img" for="file">
-                    <div class="setting-img">
-                        <img :src="user.headPortrait || headPic" alt="">
-                    </div>
-                    <p class="txt_photo__title">选择新头像</p>
-                    <p class="txt_photo__subtitle">可以选择png/jpg图片作为头像</p>
-                    <input class="input-file" type="file" name="file" id="file" @change="upImg($event)" enctype="multipart/form-data">
-                </label>
+            <div class="part-photo">
+                <el-upload
+                    class="avatar-uploader"
+                    :action="uploadPhoto"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess">
+                    <img :src="user.headPortrait" class="avatar">
+                </el-upload>
             </div>
             <el-collapse accordion :value="openItem">
                 <el-collapse-item name="nickName">
@@ -36,11 +35,11 @@
                         </div>
                     </template>
                     <div class="area_edit">
-                        <el-input class="edit_input disb" v-model="userEdit.emailPwd" placeholder="密码验证" type="password">
+                        <el-input class="edit_input disb" v-model="userEdit.email.oldPassword" placeholder="请输入用户密码" type="password">
                         </el-input>
-                        <el-input class="edit_input disb" v-model="userEdit.emailPwdNew" placeholder="新邮箱验证码">
+                        <el-input class="edit_input disb" v-model="userEdit.email.eMail" placeholder="请输入新邮箱">
                         </el-input>
-                        <el-button type="primary" @click="sendEmail('eMail')" plain size="small">发送验证邮件</el-button>
+                        <el-button type="primary" @click="updateInfo('email')" plain size="small">修改</el-button>
                     </div>
                 </el-collapse-item>
                 <el-collapse-item name="phoneNumber">
@@ -66,11 +65,11 @@
                         </div>
                     </template>
                     <div class="area_edit">
-                        <el-input class="edit_input disb" v-model="userEdit.password" placeholder="老密码">
+                        <el-input class="edit_input disb" v-model="userEdit.password.oldPassword" placeholder="老密码" type="password">
                         </el-input>
-                        <el-input class="edit_input disb" v-model="userEdit.passwordNew" placeholder="新密码">
+                        <el-input class="edit_input disb" v-model="userEdit.password.userPassword" placeholder="新密码" type="password">
                         </el-input>
-                        <el-input class="edit_input disb" v-model="userEdit.passwordNewConfirm" placeholder="新密码确认">
+                        <el-input class="edit_input disb" v-model="userEdit.password.confirmPassword" placeholder="新密码确认" type="password">
                         </el-input>
                         <el-button type="primary" @click="updateInfo('password')" plain size="small">确定</el-button>
                     </div>
@@ -85,34 +84,41 @@ import {
     updateUserInfo
 } from '@/api/user'
 import {
+    encrypt
+} from 'assets/util'
+import {
     Collapse,
-    CollapseItem
+    CollapseItem,
+    Upload
 } from 'element-ui'
 export default {
     name: 'personal-settings',
     data() {
         return {
             editflag: '',
-            openItem: 'nickName',
+            openItem: '',
             user: {
-                headPortrait: '',
+                headPortrait: require('../image/cat.png'),
                 nickName: '',
                 eMail: '',
                 phoneNumber: ''
             },
             userEdit: {
                 nickName: '',
-                email: '',
-                emailPwd: '',
-                emailNew: '',
-                emailPwdNew: '',
+                email: {
+                    oldPassword: '',
+                    eMail: ''
+                },
                 phoneNumber: '',
-                password: '',
-                passwordNew: '',
-                passwordNewConfirm: ''
+                password: {
+                    oldPassword: '',
+                    userPassword: '',
+                    confirmPassword: ''
+                }
             },
             btnTxt: '编辑',
-            headPic: require('../image/cat.png')
+            uploadPhoto: '/api/v1/file/user',
+            focusing: false
         }
     },
     filters: {
@@ -125,7 +131,8 @@ export default {
     },
     components: {
         'el-collapse': Collapse,
-        'el-collapse-item': CollapseItem
+        'el-collapse-item': CollapseItem,
+        'el-upload': Upload
     },
     created() {
         this.initInfo()
@@ -141,37 +148,8 @@ export default {
                 console.log(error.error)
             })
         },
-        /**
-         * upload photo
-         *
-         * @param      {<type>}  e       { parameter_description }
-         */
-        upImg(e) {
-            console.log(e)
-            let file = e.target.files[0]
-            console.log(file)
-            let formData = new FormData()
-            formData.append('file', file)
-            console.log(formData)
-            // uploadFile(formData, (res) => {
-            //     console.log(res)
-            // })
-            let xhr = new XMLHttpRequest()
-            xhr.open('POST', '/uploadFile', true)
-            // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-            console.log(formData)
-            xhr.send(formData)
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4) {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        let response = JSON.parse(xhr.responseText)
-                        console.log(response)
-                        // response.code === '-1999' ? util.login() : obj.success(response, xhr.responseXML)
-                    } else {
-                        console.log(xhr.status)
-                    }
-                }
-            }
+        handleAvatarSuccess(res, file) {
+            this.user.headPortrait = URL.createObjectURL(file.raw)
         },
         /**
          * Sets the editing flag.
@@ -191,25 +169,65 @@ export default {
          * @param      {<type>}  item    The item
          */
         updateInfo(item) {
-            let formData = Object.assign({}, {
+            let formData = Object.prototype.toString.call(this.userEdit[item]) === '[object String]' ? Object.assign({}, {
                 [item]: this.userEdit[item]
-            })
+            }) : Object.assign({}, this.userEdit[item])
+            for (let item of Object.keys(formData)) {
+                if (item.indexOf('Password') > -1) {
+                    formData[item] = encrypt(formData[item])
+                }
+            }
             updateUserInfo(formData).then((res) => {
-                this.user[item] = formData[item]
+                Object.assign(this.user, res)
                 this.openItem = ''
             }).catch(error => {
-                console.log(error.error)
+                this.$message.error(error.error)
             })
-        },
-
-        sendEmail() {
-            console.log('send')
         }
     }
 }
 
 </script>
 <style lang='scss' scoped>
+.part-photo {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 30px;
+    .txt_photo__title {
+        font-size: 18px;
+        color: #4ea5ad;
+        padding: 14px 80px 0;
+    }
+    .txt_photo__subtitle {
+        font-size: 14px;
+        color: #ccc;
+        padding-left: 80px;
+    }
+}
+.avatar-uploader{
+    height: 90px;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    img {
+        width: 90px;
+        height: 90px;
+    }
+    &:hover::after {
+        content: '修改';
+        text-align: center;
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
+        background-color: #eee;
+        position: absolute;
+        top: 0;
+        opacity: 0.5;
+        z-index: 3;
+    }
+}
 .setting-cells {
     padding: 0 10px;
 }
@@ -262,58 +280,6 @@ export default {
 h2 {
     margin-bottom: 30px;
     font-size: 18px;
-}
-
-.part_photo {
-    height: 90px;
-    clear: left;
-    line-height: 40px;
-    position: relative;
-    p {
-        line-height: 1.5rem;
-    }
-    .txt_photo__title {
-        font-size: 18px;
-        color: #4ea5ad;
-        padding: 14px 80px 0;
-    }
-    .txt_photo__subtitle {
-        font-size: 14px;
-        color: #ccc;
-        padding-left: 80px;
-    }
-    label {
-        float: left;
-        width: 60px;
-        text-align: right;
-    }
-    .label-img {
-        display: block;
-        float: none;
-        width: 100%;
-        text-align: left;
-        clear: left;
-        cursor: pointer;
-        height: 60px;
-        img {
-            width: 100%;
-        }
-        a {
-            margin-left: 10px;
-            line-height: 60px;
-            font-size: 12px;
-        }
-        .input-file {
-            opacity: 0;
-        }
-    }
-    .setting-img {
-        width: 70px;
-        height: 70px;
-        border-radius: 100%;
-        float: left;
-        overflow: hidden;
-    }
 }
 
 /deep/ .el-collapse-item__header,

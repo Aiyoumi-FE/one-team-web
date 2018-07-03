@@ -24,7 +24,7 @@
                 <el-table-column label="邮箱" prop="eMail"></el-table-column>
                 <el-table-column label="联系方式" prop="phoneNumber"></el-table-column>
                 <el-table-column label="操作" v-if="isAdmin">
-                    <template slot-scope="scope">
+                    <template slot-scope="scope" v-if="!tableData.administrator === scope.row._id">
                         <el-button size="mini" @click="handleOpera('admin', scope.row)">移交权限</el-button>
                         <el-button size="mini" type="danger" @click="handleOpera('del', scope.row)">删除</el-button>
                     </template>
@@ -86,7 +86,7 @@ export default {
             })
         },
         invate() {
-            this.$router.push('teamJoin')
+            this.$router.push({name: 'teamJoin'})
         },
         manageAction() {
             // this.managing = !this.managing

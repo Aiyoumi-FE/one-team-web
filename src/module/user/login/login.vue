@@ -3,7 +3,7 @@
         <el-input v-model.trim="form.eMail" class="login-input" placeholder="登录邮箱"></el-input>
         <el-input v-model.trim="form.userPassword" class="login-input" placeholder="密码" type="password"></el-input>
         <p>忘记登录密码</p>
-        <el-button type="primary" @click="submitLogin" class="login-btn">登录</el-button>
+        <el-button type="primary" @click="submitLogin()" class="login-btn">登录</el-button>
         <p>还没有加入One Team ？
             <el-button type="text" @click="goRegsiter">点击这里</el-button>加入吧！
         </p>
@@ -15,8 +15,10 @@ import {
 } from '@/api/user'
 import {
     testEmail,
-    testPwd
+    testPwd,
+    encrypt
 } from 'assets/util'
+import { cookie } from '@/assets/js/cookie'
 export default {
     name: 'login',
     data() {
@@ -34,8 +36,11 @@ export default {
                 this.$message.error(checkRes)
                 return
             }
-            signIn(this.form).then((res) => {
+            let submitForm = Object.assign({}, this.form, {userPassword: encrypt(this.form.userPassword)})
+            signIn(submitForm).then((res) => {
                 localStorage.setItem('token', res.token)
+                let exp = Date.now() + 60 * 60 * 1000
+                cookie.set('token', res.token, exp, '/')
                 if (this.$route.query.url) {
                     window.location.href = this.$route.query.url
                 } else {

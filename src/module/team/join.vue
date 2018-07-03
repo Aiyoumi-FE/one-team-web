@@ -49,14 +49,14 @@ export default {
     methods: {
         init() {
             joinUrl().then((res) => {
-                if (res.success) {
-                    this.url = res.result.url
-                    this.config.value = res.result.url
-                } else {
-                    this.$router.replace({
-                        name: 'home'
-                    })
-                }
+                // if (res.success) {
+                //     this.url = res.result.url
+                //     this.config.value = res.result.url
+                // } else {
+                //     this.$router.replace({
+                //         name: 'home'
+                //     })
+                // }
                 this.loading = false
             })
         },
