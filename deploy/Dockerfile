@@ -1,7 +1,6 @@
 FROM nginx
 
 COPY ./dist /oneteamweb
-COPY conf.json /oneteamweb/conf.json
 COPY run.sh /oneteamweb/run.sh
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY oneteamweb.conf /etc/nginx/conf.d/oneteamweb.conf

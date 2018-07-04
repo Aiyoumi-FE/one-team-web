@@ -2,14 +2,10 @@
 version: "3"
 services:
   web:
-    container_name: one-nginx
+    container_name: one-team-web
     build:
       context: .
       dockerfile: ./deploy
-    links:
-      - static:static
-  static:
-    container_name: one-web
-    build: .
-    command: npm run build
+    external_links:
+      - one-team-server_one-team-server_1:oneteamweb-back
 
