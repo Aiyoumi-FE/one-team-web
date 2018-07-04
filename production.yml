@@ -5,7 +5,9 @@ services:
     container_name: one-team-web
     build:
       context: .
-      dockerfile: ./deploy
+      dockerfile: ./deploy/Dockerfile
+    ports:
+      - "8006:80"
     external_links:
       - one-team-server_one-team-server_1:oneteamweb-back
 
