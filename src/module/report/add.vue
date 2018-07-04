@@ -11,7 +11,7 @@
             <markdown-editor v-if="isEdit" v-model="obj.content" ref="markdownEditor" :configs="configs"></markdown-editor>
             <report-entry v-else :reportData="previewDate | reportFilter" :key="obj.id"></report-entry>
         </div>
-        <el-button class="add-btn" @click="btnActive(activeName)">{{isEdit? '保存' : '编辑'}}</el-button>
+        <el-button class="add-btn" @click="btnActive(activeName)">{{btnText}}</el-button>
         <a href="javascript:;" class="add-link" @click="back()">返回列表</a>
     </div>
 </template>
@@ -58,7 +58,7 @@ export default {
             return this.$route.query.beginDate ? new Date(parseInt(this.$route.query.beginDate)) : dateFormate.getDayOfWeek(new Date(), 1)
         },
         btnText() {
-            return this.isEdit ? '编辑' : '保存'
+            return this.isEdit ? '保存' : '编辑'
         },
         des() {
             return this.activeName === 'summary' ? '本周小组总结' : '本周周报'

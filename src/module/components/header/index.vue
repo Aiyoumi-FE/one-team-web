@@ -74,6 +74,7 @@ export default {
             localStorage.removeItem('token')
             cookie.clear('team', '/')
             cookie.clear('name', '/')
+            cookie.clear('token', '/')
             this.$router.replace({
                 name: 'login'
             })

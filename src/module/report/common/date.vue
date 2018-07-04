@@ -3,7 +3,7 @@
         <p class="date-week">
             <i class="el-icon-arrow-left" @click="changeDate(-7)"></i>
             <span>{{year}}年  第{{weekNum}}周</span>
-            <i class="el-icon-arrow-right" v-if="notEnd" @click="changeDate(7)"></i>
+            <i class="el-icon-arrow-right" @click="changeDate(7)"></i>
         </p>
         <p class="date-day">{{begin}} - {{end}}</p>
         <slot name="header"></slot>
@@ -15,12 +15,11 @@ import dateFormate from './index'
 export default {
     name: 'dateFormate',
     data() {
-        return {}
+        return {
+            beginDate: this.$route.query.beginDate ? new Date(parseInt(this.$route.query.beginDate)) : dateFormate.getDayOfWeek(new Date(), 1)
+        }
     },
     computed: {
-        beginDate() {
-            return this.$route.query.beginDate ? new Date(parseInt(this.$route.query.beginDate)) : dateFormate.getDayOfWeek(new Date(), 1)
-        },
         notEnd() {
             return this.beginDate < dateFormate.getDayOfWeek(new Date(), 1)
         },
@@ -41,6 +40,7 @@ export default {
     methods: {
         changeDate(action) {
             let beginDate = Date.parse(this.beginDate) + 24 * 60 * 60 * 1000 * action
+            this.beginDate = new Date(beginDate)
             this.$emit('dateBack', beginDate)
         }
     }

@@ -28,7 +28,8 @@ import {
 import {
     testEmail,
     testPwd,
-    testName
+    testName,
+    encrypt
 } from 'assets/util'
 export default {
     name: 'register',
@@ -73,8 +74,11 @@ export default {
             if (!this.check(this.form)) {
                 return
             }
-            // this.form.photo = this.photo
-            register(this.form).then((res) => {
+            let submitForm = Object.assign({}, this.form, {
+                userPassword: encrypt(this.form.userPassword),
+                confirmPassword: encrypt(this.form.userPassword)
+            })
+            register(submitForm).then((res) => {
                 localStorage.setItem('token', res.token)
                 let timer = setTimeout(() => {
                     if (localStorage.getItem('token') === res.token) {

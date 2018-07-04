@@ -23,7 +23,7 @@ export const joinUrl = () => {
 }
 
 export const sendEmail = (param) => {
-    return _postPromise('/api/common/sendEmail', param)
+    return _postPromise('/api/v1/common/sendEmail', param)
 }
 
 /* new */

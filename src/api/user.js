@@ -18,3 +18,5 @@ export const getUsrInfo = (param) => { return _getPromise('/api/v1/user', param)
 export const updateUserInfo = (param) => { return _patchPromise('/api/v1/user', param) }
 // 注销
 export const deleteUser = (param) => { return _deletePromise('/api/v1/user', param) }
+// 注销
+export const uploadPhoto = (param, options) => { return _postPromise('/api/v1/file', param, options) }
