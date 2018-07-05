@@ -9,5 +9,5 @@ services:
     ports:
       - "8006:80"
     external_links:
-      - one-team-server_one-team-server_1:oneteamweb-back
+      - one-team-server:oneteamweb-back
 
