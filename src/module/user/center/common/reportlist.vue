@@ -1,39 +1,22 @@
 <template>
-    <div class="component_report">
-        <div class="bd-date">
-            <p class="bd-date_week">
-                <img class="bd-date_back" src="./img/back.png" alt="" @click="changeList(-7)"> {{dateInfo.year}}年 第{{dateInfo.weekNum}}周
-                <img class="bd-date_next" v-if="notEnd" src="./img/back.png" alt="" @click="changeList(7)">
-            </p>
-            <p class="bd-date_detail">{{dateInfo.begin}} - {{dateInfo.end}}</p>
+    <div>
+        <date-el v-on:dateBack="changeList"></date-el>
+        <div class="add-box">
+            <markdown-editor v-show="isEdit" v-model="obj.content" ref="markdownEditor" :configs="configs"></markdown-editor>
+            <report-entry v-show="!isEdit" :reportData="previewDate | reportFilter" :key="obj.id"></report-entry>
         </div>
-        <div class="bd-content">
-            <!-- <template v-if="isSingle && reportContent">
-                <vue-markdown v-highlight :source="reportContent" class="cell-bd markdown padlr140"></vue-markdown>
-            </template> -->
-            <ul v-if="memberReportList.length" class="ot-cells">
-                <li v-for="item in memberReportList" :key="item.id" class="ot-cell">
-                    <report-unit :reportData="item"></report-unit>
-                    <!-- <div class="cell-hd">
-                        <img class="cell-hd-pic" :src="item.phote | photoFilter" alt="">
-                        <p class="cell-hd-name">{{item.userId.nickName}}</p>
-                    </div> -->
-                    <vue-markdown v-highlight :source="item.content" class="cell-bd markdown"></vue-markdown>
-                </li>
-            </ul>
-            <div class="bg_empty" v-if="!memberReportList.length && !reportContent">
-                <p>~~空空如也~~</p>
-            </div>
-        </div>
+        <el-button class="add-btn" @click="btnActive()">{{btnText}}</el-button>
     </div>
 </template>
 <script>
+import dateEl from 'module/report/common/date'
+import reportEntry from 'module/components/report/entry'
+import dateFormate from 'module/report/common/index'
+import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import {
-    getReportDetail
+    getReportDetail,
+    saveReportDetail
 } from '@/api/report'
-import dateFormate from '../../../report/common/index'
-import VueMarkdown from 'vue-markdown'
-import reportUnit from '@/module/components/reportunit/index'
 
 export default {
     name: 'reportDetail',
@@ -48,29 +31,41 @@ export default {
     },
     data() {
         return {
-            dateInfo: {
-                year: '',
-                weekNum: '',
-                begin: '',
-                end: ''
-            },
             beginDate: null,
-            memberReportList: [],
-            reportContent: ''
+            isEdit: false,
+            user: {},
+            obj: {
+                content: '',
+                type: this.$route.query.type
+            },
+            isAdmin: false,
+            configs: {
+                status: false, // 禁用底部状态栏
+                spellChecker: false // 禁用拼写检查
+            }
         }
     },
     components: {
-        VueMarkdown,
-        reportUnit
+        dateEl,
+        reportEntry,
+        markdownEditor
     },
     filters: {
-        photoFilter(val) {
-            return val
+        reportFilter(obj) {
+            return {
+                head: obj.phote,
+                name: obj.nickName,
+                date: dateFormate.format(obj.createTime),
+                content: obj.content
+            }
         }
     },
     computed: {
-        notEnd() {
-            return this.beginDate < dateFormate.getDayOfWeek(new Date(), 1)
+        btnText() {
+            return this.isEdit ? '保存' : '编辑'
+        },
+        previewDate() {
+            return Object.assign(this.user, this.obj)
         }
     },
     watch: {
@@ -78,139 +73,47 @@ export default {
     },
     mounted() {
         this.beginDate = this.$route.query.beginDate ? new Date(parseInt(this.$route.query.beginDate)) : dateFormate.getDayOfWeek(new Date(), 1)
-        this.setDate()
-        this.loadData()
+        this.initDate()
     },
     methods: {
-        loadData() {
+        changeList(val) {
+            this.beginDate = new Date(val)
+            this.initDate()
+        },
+        initDate() {
             getReportDetail({
                 beginDate: this.beginDate,
-                userId: this.userId
+                type: 'weekly'
             }).then((res) => {
-                if (res.success) {
-                    if (this.isSingle) {
-                        this.reportContent = res.result.content
-                    } else {
-                        this.memberReportList = res.result.list
-                    }
-                }
+                this.user = res.user
+                this.obj = res.detail
+                this.isAdmin = res.isAdmin
+            }).catch(error => {
+                console.log(error.error)
             })
         },
-        setDate() {
-            this.dateInfo.year = dateFormate.getYear(this.beginDate)
-            this.dateInfo.weekNum = dateFormate.getYearWeek(this.beginDate)
-
-            let begin = this.beginDate
-            let end = dateFormate.getDayOfWeek(this.beginDate, 5)
-
-            this.dateInfo.begin = `${begin.getMonth() + 1}/${begin.getDate()}`
-            this.dateInfo.end = `${end.getMonth() + 1}/${end.getDate()}`
-        },
-        changeList(action) {
-            this.beginDate = new Date(Date.parse(this.beginDate) + 24 * 60 * 60 * 1000 * action)
-            this.loadData()
-            this.setDate()
+        btnActive() {
+            if (!this.isEdit) {
+                this.isEdit = !this.isEdit
+                return
+            }
+            Object.assign(this.obj, {
+                beginDate: this.beginDate,
+                type: 'weekly'
+            })
+            saveReportDetail(this.obj).then((res) => {
+                this.isEdit = false
+            }).catch(error => {
+                console.log(error.error)
+            })
         }
     }
 }
 
 </script>
 <style lang="scss" scoped>
-.component_report {
-    .markdown {
-        width: auto;
-    }
+@import 'simplemde/dist/simplemde.min.css';
+.add-btn {
+    margin-left: 65px;
 }
-
-.bd-date {
-    text-align: center;
-    font-size: 24px;
-    color: #333;
-    span {
-        padding: 0 20px;
-    }
-    img {
-        width: 24px;
-    }
-}
-
-.bd-date_detail {
-    margin: 0;
-    font-size: 16px;
-    color: #999;
-}
-
-.bd-date_week {
-    position: relative;
-    display: inline-block;
-    margin: 0 auto;
-}
-
-.bd-date_back {
-    position: absolute;
-    left: -34px;
-    top: 4px;
-}
-
-.bd-date_next {
-    position: absolute;
-    right: -34px;
-    top: 4px;
-    transform: rotate(180deg);
-}
-
-.ot-cells:before {
-    content: '';
-    display: none;
-}
-
-.ot-cell {
-    padding: 10px 10px 20px;
-}
-
-.bd-content {
-    margin: 40px auto;
-}
-
-.cell-hd {
-    width: 50px;
-    text-align: center;
-    margin-top: 10px;
-}
-
-.cell-hd-pic {
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    line-height: 50px;
-}
-
-.cell-hd-name {
-    margin-top: 10px;
-    color: #999;
-}
-
-.cell-bd {
-    flex-grow: 1;
-}
-
-.padlr140 {
-    padding: 0 140px;
-}
-
-.bg_empty {
-    width: 170px;
-    height: 250px;
-    text-align: center;
-    margin: 0 auto;
-    padding-top: 150px;
-    background: url('./img/empty.png') 0 0 no-repeat;
-    background-size: contain;
-    p {
-        font-size: 20px;
-        /* font-weight: bold; */
-        color: #9a9a9a;
-    }
-}
-
 </style>

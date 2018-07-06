@@ -1,13 +1,13 @@
 <template>
-    <div class="page_center">
+    <div>
         <div class="area_info">
             <div class="part_photo">
-                <img :src="photoSrc" alt="">
+                <img :src="userInfo.photo" alt="">
             </div>
             <div class="part_info">
                 <p class="user_name">{{userInfo.nickName}}</p>
                 <p>{{userLink}}</p>
-                <p>{{userInfo.desc}}</p>
+                <p>{{userInfo.userDesc}}</p>
             </div>
         </div>
         <div class="area_menu">
@@ -25,9 +25,9 @@
 <script>
 import reportList from './common/reportlist'
 import focusList from './common/focuslist'
-// import {
-//     getUsrInfo
-// } from '@/api/home'
+import {
+    getUsrInfo
+} from '@/api/user'
 import {
     getRecordList
 } from '@/api/subscript'
@@ -39,9 +39,12 @@ export default {
     name: 'myhome',
     data() {
         return {
-            photoSrc: require('../image/leader.png'),
             userInfo: {
-
+                photo: require('../image/leader.png'),
+                eMail: '',
+                nickName: '',
+                phoneNumber: '15268175233',
+                userDesc: ''
             },
             menuList: [{
                 label: '周报',
@@ -62,10 +65,10 @@ export default {
             return this.$route.query.id
         },
         userLink() {
-            if (this.userInfo.eMail && this.userInfo.phone) {
-                return this.userInfo.eMail + '/' + this.userInfo.phone
+            if (this.userInfo.eMail && this.userInfo.phoneNumber) {
+                return this.userInfo.phoneNumber + '/' + this.userInfo.eMail
             } else {
-                return this.userInfo.eMail || this.userInfo.phone
+                return this.userInfo.eMail || this.userInfo.phoneNumber
             }
         },
         currentUid() {
@@ -84,9 +87,11 @@ export default {
     },
     methods: {
         initUserInfo() {
-            // getUsrInfo().then((res) => {
-            //     Object.assign(this.userInfo, res.result)
-            // })
+            getUsrInfo().then((res) => {
+                Object.assign(this.userInfo, res)
+            }).catch(error => {
+                console.log(error.error)
+            })
         },
         getFocusList() {
             getRecordList().then((res) => {
@@ -102,38 +107,27 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    user-select: none;
-}
-.page_center {
-    max-width: 960px;
-    margin: 40px auto 0;
-    .area_info {
-        height: 120px;
-        padding: 20px;
-        display: flex;
-        .part_photo {
-            width: 90px;
+.area_info {
+    height: 120px;
+    padding: 20px;
+    display: flex;
+    .part_photo {
+        width: 90px;
+        height: 80px;
+        img {
             height: 80px;
-            img {
-                height: 80px;
-            }
         }
-        .part_info {
-            padding-top: 5px;
-            .user_name {
-                font-size: 20px;
-                font-weight: bold;
-            }
+    }
+    .part_info {
+        padding-top: 5px;
+        .user_name {
+            font-size: 20px;
+            font-weight: bold;
         }
     }
 }
 .area_menu {
     height: 40px;
-    padding: 0 35px;
     position: relative;
     &:before {
         content: "";
@@ -155,5 +149,8 @@ export default {
         background-color: rgb(228, 231, 237);
         z-index: 1;
     }
+}
+/deep/ .el-tabs__header {
+    padding: 0 30px;
 }
 </style>
