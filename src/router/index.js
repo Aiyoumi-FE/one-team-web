@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Axios from 'axios'
 import VueRouter from 'vue-router'
 import routerConfig from './config'
 import { cookie } from '@/assets/js/cookie'
@@ -46,9 +47,8 @@ router.beforeEach((to, from, next) => {
             }
         } else {
             if (token) {
-                Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token
+                Axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
             }
-
             next()
         }
     } else {
