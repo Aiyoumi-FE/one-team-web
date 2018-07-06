@@ -44,6 +44,8 @@ router.beforeEach((to, from, next) => {
             } else {
                 next('/page/user/login')
             }
+        } else {
+            next()
         }
     } else {
         next()
