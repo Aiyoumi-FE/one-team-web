@@ -1,17 +1,19 @@
 import {
-    _postPromise
+    _getPromise,
+    _postPromise,
+    _deletePromise
 } from './base'
 
 export const getRecordList = (param) => {
-    return _postPromise('/api/subscript/getRecordList', param)
+    return _getPromise('/api/v1/record', param)
 }
 
 export const addRecord = (param) => {
-    return _postPromise('/api/subscript/addRecord', param)
+    return _postPromise('/api/v1/record', param)
 }
 
 export const deleteRecord = (param) => {
-    return _postPromise('/api/subscript/deleteRecord', param)
+    return _deletePromise('/api/v1/record', param)
 }
 
 export const getAllUser = (param) => {
@@ -19,7 +21,7 @@ export const getAllUser = (param) => {
 }
 
 export const getUserByName = (param) => {
-    return _postPromise('/api/subscript/getUserByName', param)
+    return _getPromise('/api/v1/user/name', param)
 }
 
 export const getMySubList = (param) => {

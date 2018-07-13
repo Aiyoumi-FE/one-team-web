@@ -5,6 +5,9 @@ const formatRes = (res) => {
     if (res.success) {
         return Promise.resolve(res.result)
     }
+    if (res.status === 'success') {
+        return Promise.resolve(res.data)
+    }
     let url = window.location.href
     if (res.code === '-1999') {
         // router.replace({
@@ -64,7 +67,7 @@ export const _patchPromise = (url, data = {}) => {
 }
 
 export const _deletePromise = (url, data = {}) => {
-    return axios.delete(url, data).then(response => {
+    return axios.delete(url, { params: data }).then(response => {
         return Promise.resolve(response)
     }).catch((error) => {
         return Promise.reject(error)

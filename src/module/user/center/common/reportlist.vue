@@ -2,8 +2,8 @@
     <div>
         <date-el v-on:dateBack="changeList"></date-el>
         <div class="add-box">
-            <markdown-editor v-show="isEdit" v-model="obj.content" ref="markdownEditor" :configs="configs"></markdown-editor>
-            <report-entry v-show="!isEdit" :reportData="previewDate | reportFilter" :key="obj.id"></report-entry>
+            <markdown-editor v-if="isEdit" v-model="obj.content" ref="markdownEditor" :configs="configs"></markdown-editor>
+            <report-entry v-else :reportData="previewDate | reportFilter" :key="obj.id"></report-entry>
         </div>
         <el-button class="add-btn" @click="btnActive()">{{btnText}}</el-button>
     </div>
@@ -112,7 +112,6 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-@import 'simplemde/dist/simplemde.min.css';
 .add-btn {
     margin-left: 65px;
 }

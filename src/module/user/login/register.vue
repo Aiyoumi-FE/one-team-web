@@ -62,7 +62,7 @@ export default {
         init() {
             if (!this.teamShow) {
                 this.teamPick = 'join'
-                this.form.teamId = this.$route.query.id
+                this.teamId = this.$route.query.id
             }
         },
         submitRegsiter() {
@@ -113,6 +113,9 @@ export default {
             if (!(form.userPassword === form.confirmPassword)) {
                 form.confirmPassword ? alert('两次密码不一致') : alert('请再次输入密码')
                 return
+            }
+            if (!this.teamShow) {
+                return true
             }
             if (this.teamStatus && !form.teamName) {
                 alert('请输入团队名称')

@@ -2,7 +2,7 @@
     <div>
         <div class="area_info">
             <div class="part_photo">
-                <img :src="userInfo.photo" alt="">
+                <img :src="userInfo.headPortrait" alt="">
             </div>
             <div class="part_info">
                 <p class="user_name">{{userInfo.nickName}}</p>
@@ -16,7 +16,7 @@
                     <report-list :userId="userId"></report-list>
                 </el-tab-pane>
                 <el-tab-pane label="关注" name="focus" >
-                    <focus-list :focusList="focusList"></focus-list>
+                    <focus-list></focus-list>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -29,9 +29,6 @@ import {
     getUsrInfo
 } from '@/api/user'
 import {
-    getRecordList
-} from '@/api/subscript'
-import {
     Tabs,
     TabPane
 } from 'element-ui'
@@ -40,7 +37,7 @@ export default {
     data() {
         return {
             userInfo: {
-                photo: require('../image/leader.png'),
+                headPortrait: require('../image/leader.png'),
                 eMail: '',
                 nickName: '',
                 phoneNumber: '15268175233',
@@ -83,7 +80,6 @@ export default {
     },
     mounted() {
         this.initUserInfo()
-        this.getFocusList()
     },
     methods: {
         initUserInfo() {
@@ -93,15 +89,8 @@ export default {
                 console.log(error.error)
             })
         },
-        getFocusList() {
-            getRecordList().then((res) => {
-                if (res.success) {
-                    this.focusList = res.result
-                }
-            })
-        },
         chooseTab(tab, event) {
-            console.log(tab, event)
+            // console.log(tab, event)
         }
     }
 }
@@ -112,10 +101,13 @@ export default {
     padding: 20px;
     display: flex;
     .part_photo {
-        width: 90px;
+        width: 80px;
         height: 80px;
+        border-radius: 40px;
+        overflow: hidden;
+        margin-right: 15px;
         img {
-            height: 80px;
+            width: 100%;
         }
     }
     .part_info {

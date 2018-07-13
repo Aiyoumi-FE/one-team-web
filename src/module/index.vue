@@ -17,7 +17,7 @@ export default {
 
 </script>
 <style lang="scss">
-// @import '../var.scss';
+@import 'simplemde/dist/simplemde.min.css';
 body {
     background-color: #f2f2f2;
 }

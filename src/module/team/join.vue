@@ -17,7 +17,7 @@
         </div>
         <div class="methods-orcode">
             <h4>通过微信扫码邀请好友</h4>
-            <!-- <vue-q-art :config="config"></vue-q-art> -->
+            <vue-q-art :config="config"></vue-q-art>
         </div>
     </div>
 </template>
@@ -26,13 +26,14 @@ import {
     joinUrl,
     sendEmail
 } from '@/api/team'
-// import VueQArt from 'vue-qart'
+import VueQArt from 'vue-qart'
 export default {
     name: 'home',
     data() {
         return {
             url: '',
             loading: true,
+            imageLink: '',
             config: {
                 value: '',
                 imagePath: require('@/assets/logo.png')
@@ -41,7 +42,7 @@ export default {
         }
     },
     components: {
-        // VueQArt
+        VueQArt
     },
     mounted() {
         this.init()
@@ -49,15 +50,13 @@ export default {
     methods: {
         init() {
             joinUrl().then((res) => {
-                // if (res.success) {
-                //     this.url = res.result.url
-                //     this.config.value = res.result.url
-                // } else {
-                //     this.$router.replace({
-                //         name: 'home'
-                //     })
-                // }
+                this.url = res.url
+                this.config.value = res.url
                 this.loading = false
+            }).catch(() => {
+                // this.$router.replace({
+                //     name: 'home'
+                // })
             })
         },
         send() {
