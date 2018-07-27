@@ -52,10 +52,14 @@ export default {
     },
     filters: {
         reportFilter(obj) {
+            let da = dateFormate.format(obj.createTime)
+            if (obj.updateTime && obj.updateTime !== obj.createTime) {
+                da = `修改于${dateFormate.format(obj.updateTime)}`
+            }
             return {
                 head: obj.phote,
                 name: obj.nickName,
-                date: dateFormate.format(obj.createTime),
+                date: da,
                 content: obj.content
             }
         }

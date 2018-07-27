@@ -56,12 +56,13 @@ export default {
 }
 
 .bd-title {
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 10px;
     .name {
         font-weight: bold;
     }
     .date {
+        font-size: 12px;
         color: #999;
     }
 }

@@ -128,9 +128,9 @@ export default {
     },
     mounted() {
         // this.getMyTeam()
-        this.getChildInfo()
-        this.getTeamListInfo()
-        this.getFocusList()
+        // this.getChildInfo()
+        // this.getTeamListInfo()
+        // this.getFocusList()
     },
     components: {
         'el-tree': Tree

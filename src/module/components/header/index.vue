@@ -5,7 +5,7 @@
                 <img class="nav-notice" src="./image/logo.png" alt="">
             </div>
             <el-menu :default-active="'home'" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                <el-menu-item index="home">面板</el-menu-item>
+                <!-- <el-menu-item index="home">面板</el-menu-item> -->
                 <el-menu-item index="report">汇报</el-menu-item>
                 <el-menu-item index="team">团队</el-menu-item>
                 <el-menu-item index="notice" class="nav-notice">
@@ -36,7 +36,7 @@ export default {
     data() {
         return {
             routerLink: {
-                home: 'teamDashBoard',
+                // home: 'teamDashBoard',
                 report: 'reportList',
                 team: 'teamList',
                 personalCenter: 'personalCenter',
