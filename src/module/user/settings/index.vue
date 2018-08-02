@@ -17,7 +17,7 @@
                         <div class="setting-item" @click="setEditFlag('nickName')">
                             <label class="setting-item__label">用&nbsp;户&nbsp;名</label>
                             <p class="setting-item__value">{{user.nickName | contentFilter(editflag !== 'name', '用户名')}}</p>
-                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'name') }}</a>
+                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'nickName') }}</a>
                         </div>
                     </template>
                     <div class="area_edit">
@@ -28,10 +28,10 @@
                 </el-collapse-item>
                 <el-collapse-item name="eMail">
                     <template slot="title">
-                        <div class="setting-item" @click="setEditFlag('email')">
+                        <div class="setting-item" @click="setEditFlag('eMail')">
                             <label class="setting-item__label">邮&nbsp;&nbsp;&nbsp;箱</label>
                             <p class="setting-item__value">{{user.eMail | contentFilter(editflag !== 'email', '邮箱')}}</p>
-                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'email') }}</a>
+                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'eMail') }}</a>
                         </div>
                     </template>
                     <div class="area_edit">
@@ -47,7 +47,7 @@
                         <div class="setting-item" @click="setEditFlag('phoneNumber')">
                             <label class="setting-item__label">手&nbsp;&nbsp;&nbsp;机</label>
                             <p class="setting-item__value">{{user.phoneNumber | contentFilter(editflag !== 'phone', '手机号')}}</p>
-                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'phone') }}</a>
+                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'phoneNumber') }}</a>
                         </div>
                     </template>
                     <div class="area_edit">
@@ -58,10 +58,10 @@
                 </el-collapse-item>
                 <el-collapse-item name="userPassword">
                     <template slot="title">
-                        <div class="setting-item" @click="setEditFlag('password')">
+                        <div class="setting-item" @click="setEditFlag('userPassword')">
                             <label class="setting-item__label">密&nbsp;&nbsp;&nbsp;码</label>
                             <p class="setting-item__value">重置密码</p>
-                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'password') }}</a>
+                            <a href="javascript:;">{{btnTxt | editBtnFilter(editflag !== 'userPassword') }}</a>
                         </div>
                     </template>
                     <div class="area_edit">
@@ -180,6 +180,10 @@ export default {
             updateUserInfo(formData).then((res) => {
                 Object.assign(this.user, res)
                 this.openItem = ''
+                this.$message({
+                    message: '信息修改成功',
+                    type: 'success'
+                })
             }).catch(error => {
                 this.$message.error(error.error)
             })

@@ -94,7 +94,6 @@ export default {
                 this.user = res.user
                 this.obj = res.detail
                 this.isAdmin = res.isAdmin
-                console.log(res)
             }).catch(error => {
                 console.log(error.error)
             })
