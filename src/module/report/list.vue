@@ -5,6 +5,21 @@
             <el-tab-pane label="个人周报" name="weekly"></el-tab-pane>
             <el-tab-pane label="小组总结" name="summary"></el-tab-pane>
         </el-tabs>
+        <el-dropdown class="list-btn_left"
+            trigger="click"
+            @command="getGroupList">
+            <el-button type="primary" size="small">
+                筛选<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                    v-for="(item, index) in group"
+                    :command="item._id"
+                    :key="index">
+                    {{item.teamName}}
+                </el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
         <div class="list-write">
             <a href="javsscript:;" @click="goWeeklyConfig" v-if="isAdmin">设置</a>
             <el-button @click="creatWeekly" v-if="write">{{activeName == 'summary' ? '写总结' : '写周报'}}</el-button>
@@ -16,11 +31,15 @@
 </template>
 <script>
 import {
-    getReportList
+    getReportList,
+    getReportByGroup
 } from '@/api/report'
 import {
     Tabs,
-    TabPane
+    TabPane,
+    Dropdown,
+    DropdownMenu,
+    DropdownItem
 } from 'element-ui'
 import dateFormate from './common/index'
 import dateEl from './common/date'
@@ -39,14 +58,18 @@ export default {
                 begin: '',
                 end: ''
             },
-            loading: true
+            loading: true,
+            group: []
         }
     },
     components: {
         dateEl,
         reportEntry,
         'el-tabs': Tabs,
-        'el-tab-pane': TabPane
+        'el-tab-pane': TabPane,
+        'el-dropdown': Dropdown,
+        'el-dropdown-menu': DropdownMenu,
+        'el-dropdown-item': DropdownItem
     },
     filters: {
         reportFilter(item) {
@@ -85,7 +108,19 @@ export default {
             }).then((res) => {
                 this.isAdmin = res.isAdmin
                 this.list = res.list
+                this.group = res.teamGroup
                 this.loading = false
+            }).catch(error => {
+                console.log(error.error)
+            })
+        },
+        getGroupList(teamId) {
+            getReportByGroup({
+                beginDate: this.beginDate,
+                type: this.activeName,
+                groupId: teamId
+            }).then((res) => {
+                this.list = res
             }).catch(error => {
                 console.log(error.error)
             })
@@ -164,6 +199,12 @@ export default {
 .list-write {
     position: absolute;
     right: 10px;
+    top: 50px;
+}
+
+.list-btn_left {
+    position: absolute;
+    left: 10px;
     top: 50px;
 }
 

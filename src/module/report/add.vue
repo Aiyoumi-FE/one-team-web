@@ -108,6 +108,9 @@ export default {
                 type: this.activeName
             })
             saveReportDetail(this.obj).then((res) => {
+                if (res.reportId) {
+                    this.obj._id = res.reportId
+                }
                 this.isEdit = false
             }).catch(error => {
                 console.log(error.error)

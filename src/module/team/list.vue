@@ -7,9 +7,20 @@
                     <span class="invate">邀请码：{{tableData._id}}</span>
                 </div>
                 <div>
+                    <el-button size="small" v-if="tableData.isAdmin" @click="manageGroup">管理分组</el-button>
                     <el-button size="small" v-if="tableData.isAdmin" @click="invate">邀请新成员</el-button>
                     <el-button size="small" @click="teamOpera('out')">退出团队</el-button>
                 </div>
+            </div>
+            <div class="team-group">
+                <el-button v-for="(item, index) in tableData.teamGroup"
+                    :class="{'group-focus': item._id === type}"
+                    :key="index"
+                    size="mini"
+                    type="info"
+                    @click="getGroup(item._id)">{{item.teamName}}
+                </el-button>
+                <el-button size="mini" type="info" @click="initData()">全部成员</el-button>
             </div>
             <el-table :data="tableData.memberList" style="width: 100%">
                 <el-table-column label="成员">
@@ -23,10 +34,10 @@
                 </el-table-column>
                 <el-table-column label="邮箱" prop="eMail"></el-table-column>
                 <el-table-column label="联系方式" prop="phoneNumber"></el-table-column>
-                <el-table-column label="操作" v-if="isAdmin">
-                    <template slot-scope="scope" v-if="!tableData.administrator === scope.row._id">
-                        <el-button size="mini" @click="handleOpera('admin', scope.row)">移交权限</el-button>
-                        <el-button size="mini" type="danger" @click="handleOpera('del', scope.row)">删除</el-button>
+                <el-table-column label="操作" v-if="isAdmin && type === 'team'">
+                    <template slot-scope="scope" v-if="!(tableData.administrator === scope.row._id)">
+                        <el-button size="mini" @click="teamOpera('admin', scope.row._id)">移交权限</el-button>
+                        <el-button size="mini" type="danger" @click="teamOpera('del', scope.row._id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -51,7 +62,8 @@ export default {
         return {
             refuse: false,
             loading: true,
-            tableData: {}
+            tableData: {},
+            type: ''
         }
     },
     filters: {
@@ -78,6 +90,7 @@ export default {
     methods: {
         initData() {
             getMembers().then((res) => {
+                this.type = 'team'
                 this.tableData = res
                 this.loading = false
             }).catch(error => {
@@ -86,7 +99,10 @@ export default {
             })
         },
         invate() {
-            this.$router.push({name: 'teamJoin'})
+            this.$router.push({ name: 'teamJoin' })
+        },
+        manageGroup() {
+            this.$router.push({ name: 'teamGroup' })
         },
         manageAction() {
             // this.managing = !this.managing
@@ -107,6 +123,15 @@ export default {
             }).catch(error => {
                 this.$message.error(error.error)
             })
+        },
+        getGroup(teamId) {
+            this.type = teamId
+            getMembers({ teamId }).then((res) => {
+                this.tableData.memberList = res.memberList
+            }).catch(error => {
+                this.$message.error(error.error)
+                this.refuse = true
+            })
         }
     }
 }
@@ -124,6 +149,11 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.group-focus {
+    background: #409eff;
+    border-color: #409eff;
 }
 
 .title {

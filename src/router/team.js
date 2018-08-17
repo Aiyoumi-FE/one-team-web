@@ -1,5 +1,6 @@
 const teamList = () => import(/* webpackChunkName: 'team_list' */ '../module/team/list')
 const teamJoin = () => import(/* webpackChunkName: 'team_join' */ '../module/team/join')
+const teamGroup = () => import(/* webpackChunkName: 'team_tree' */ '../module/team/group')
 const teamTree = () => import(/* webpackChunkName: 'team_tree' */ '../module/team/tree')
 const teamDashBoard = () => import(/* webpackChunkName: 'team_dashboard' */ '../module/team/dashboard')
 const App = () => import(/* webpackChunkName: 'index' */ '../module/index')
@@ -35,6 +36,13 @@ export default [{
         name: 'teamDashBoard',
         meta: {
             title: '主管面板'
+        }
+    }, {
+        path: 'group',
+        component: teamGroup,
+        name: 'teamGroup',
+        meta: {
+            title: '分组管理'
         }
     }]
 }]

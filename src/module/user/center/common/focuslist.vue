@@ -159,7 +159,6 @@ export default {
             })
         },
         delRecordUser(id) {
-            console.log(id)
             deleteRecord({ subUserId: id }).then((res) => {
                 this.initData()
             }).catch((err) => {

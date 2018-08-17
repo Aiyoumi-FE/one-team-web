@@ -33,3 +33,8 @@ export const saveReportTemplate = (param) => {
 export const getReportUser = (param) => {
     return _getPromise('/api/v1/report/user', param)
 }
+
+// 获得汇报名单
+export const getReportByGroup = (param) => {
+    return _getPromise('/api/v1/report/group', param)
+}
