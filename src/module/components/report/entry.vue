@@ -9,7 +9,7 @@
                 <span v-if="reportData.team" class="team">{{reportData.team}}</span>
                 <span v-if="reportData.date" class="date">{{reportData.date}}</span>
             </p>
-            <vue-markdown v-highlight :source="reportData.content"></vue-markdown>
+            <vue-markdown v-highlight :source="reportData.content" class="markdown-body"></vue-markdown>
         </div>
     </div>
 </template>
@@ -34,14 +34,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .report-entry {
-    padding: 20px;
-    // border-bottom: 1px solid #e4e7ed;
+    padding: 20px; // border-bottom: 1px solid #e4e7ed;
     display: flex;
     justify: space-between;
 }
-.report-entry + .report-entry {
+
+.report-entry+.report-entry {
     border-top: 1px solid #e4e7ed;
 }
+
 .hd {
     img {
         background: #ccc;
@@ -50,6 +51,7 @@ export default {
         height: 40px;
     }
 }
+
 .bd {
     margin-left: 10px;
     flex-grow: 1;
