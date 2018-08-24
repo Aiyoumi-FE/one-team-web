@@ -39,8 +39,8 @@ export default {
     justify: space-between;
 }
 
-.report-entry+.report-entry {
-    border-top: 1px solid #e4e7ed;
+.report-entry {
+    border-bottom: 1px solid #e4e7ed;
 }
 
 .hd {

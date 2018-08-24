@@ -18,6 +18,10 @@
                     :key="index">
                     {{item.teamName}}
                 </el-dropdown-item>
+                <el-dropdown-item
+                    command="all">
+                    所有
+                </el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
         <div class="list-write">
@@ -26,6 +30,19 @@
         </div>
         <div class="list-list">
             <report-entry v-for="item in list" :reportData="item | reportFilter" :key="item.id"></report-entry>
+        </div>
+        <div class="list-nowrite" v-if="notWritten.length > 0">
+            <p class="list-nowrite-title">
+                <i class="el-icon-warning"></i>
+                {{notWritten.length}} 位成员还未写周报
+            </p>
+            <el-button v-for="(item, index) in notWritten"
+                plain
+                class="list-nowrite-item"
+                :key="index"
+                size="mini"
+                type="info">{{memberMap[item].nickName}}
+            </el-button>
         </div>
     </div>
 </template>
@@ -59,7 +76,9 @@ export default {
                 end: ''
             },
             loading: true,
-            group: []
+            group: [],
+            memberMap: {},
+            notWritten: []
         }
     },
     components: {
@@ -109,18 +128,26 @@ export default {
                 this.isAdmin = res.isAdmin
                 this.list = res.list
                 this.group = res.teamGroup
+                this.memberMap = res.memberMap
+                this.notWritten = res.notWritten
                 this.loading = false
             }).catch(error => {
                 console.log(error.error)
             })
         },
         getGroupList(teamId) {
+            if (teamId === 'all') {
+                this.initData()
+                return
+            }
             getReportByGroup({
                 beginDate: this.beginDate,
                 type: this.activeName,
                 groupId: teamId
             }).then((res) => {
-                this.list = res
+                this.list = res.list
+                this.memberMap = res.memberMap
+                this.notWritten = res.notWritten
             }).catch(error => {
                 console.log(error.error)
             })
@@ -206,6 +233,21 @@ export default {
     position: absolute;
     left: 10px;
     top: 50px;
+}
+
+.list-nowrite {
+    padding-top: 20px;
+}
+
+.list-nowrite-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #999;
+}
+
+.list-nowrite-item {
+    height: 40px;
+    border-radius: 20px;
 }
 
 </style>
