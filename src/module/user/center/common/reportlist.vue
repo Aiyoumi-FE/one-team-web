@@ -117,6 +117,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .add-btn {
-    margin-left: 65px;
+    margin: 30px 0 0 65px;
 }
 </style>

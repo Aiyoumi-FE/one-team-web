@@ -40,7 +40,7 @@ export default {
                 headPortrait: require('../image/leader.png'),
                 eMail: '',
                 nickName: '',
-                phoneNumber: '15268175233',
+                phoneNumber: '',
                 userDesc: ''
             },
             menuList: [{
@@ -119,7 +119,6 @@ export default {
     }
 }
 .area_menu {
-    height: 40px;
     position: relative;
     &:before {
         content: "";
@@ -131,18 +130,8 @@ export default {
         background-color: rgb(228, 231, 237);
         z-index: 1;
     }
-    &:after {
-        content: "";
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-        width: 100%;
-        height: 2px;
-        background-color: rgb(228, 231, 237);
-        z-index: 1;
-    }
 }
-/deep/ .el-tabs__header {
+/deep/ .el-tabs__nav-scroll {
     padding: 0 30px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="ot-page">
+    <div>
         <page-header v-if="!$route.meta.throwHeader"></page-header>
         <transition name="fade">
             <router-view :class="{'ot-content': !$route.meta.throwContent}"></router-view>
@@ -20,10 +20,6 @@ export default {
 @import 'simplemde/dist/simplemde.min.css';
 body {
     background-color: #f2f2f2;
-}
-
-.ot-page {
-    overflow: hidden;
 }
 
 .ot-content {
