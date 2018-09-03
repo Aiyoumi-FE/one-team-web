@@ -46,9 +46,9 @@ export default {
 .hd {
     img {
         background: #ccc;
-        border-radius: 20px;
-        width: 40px;
-        height: 40px;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
     }
 }
 
@@ -62,6 +62,8 @@ export default {
     margin-bottom: 10px;
     .name {
         font-weight: bold;
+        color: #409eff;
+        font-size: 20px;
     }
     .date {
         font-size: 12px;

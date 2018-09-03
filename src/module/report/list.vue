@@ -248,6 +248,7 @@ export default {
 .list-nowrite-item {
     height: 40px;
     border-radius: 20px;
+    margin: 4px;
 }
 
 </style>

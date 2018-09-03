@@ -113,7 +113,10 @@
         height: auto;
     }
 }
-
+.markdown-body h3 {
+    font-size: 1.05em;
+    color: #868686;
+}
 hr {
     height: 1px;
     border: none;
